@@ -1,0 +1,525 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block title %}{% endblock title %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="https://img.freepik.com/premium-vector/gh-letter-logo-design-black-background-initial-monogram-letter-gh-logo-design-vector-template_634196-1069.jpg?w=740" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'user_home/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+        href="{% static 'user_home/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+        href="{% static 'user_home/fonts/iconic/css/material-design-iconic-font.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'user_home/fonts/linearicons-v1.0.0/icon-font.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'user_home/vendor/animate/animate.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'user_home/vendor/css-hamburgers/hamburgers.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'user_home/vendor/animsition/css/animsition.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'user_home/vendor/select2/select2.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'user_home/vendor/daterangepicker/daterangepicker.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'user_home/vendor/slick/slick.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'user_home/vendor/MagnificPopup/magnific-popup.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+        href="{% static 'user_home/vendor/perfect-scrollbar/perfect-scrollbar.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'user_home/css/util.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'user_home/css/main.css' %}">
+    {% comment %} <link rel="stylesheet" type="text/css" href="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"> {% endcomment %}
+
+    <!--===============================================================================================-->
+    {% block link %}{% endblock %}
+    
+</head>
+
+<body class="animsition">
+
+    <!-- Header -->
+    <header style="margin-bottom:5% bg-light">
+
+        {% comment %} <div class="wrap-menu-desktop bg-light"></div> {% endcomment %}
+
+        <!-- Header desktop -->
+        <div class="container-menu-desktop">
+            <!-- Blackbar -->
+            <div class="top-bar">
+                <div class="content-topbar flex-sb-m h-full container">
+                </div>
+            </div>
+
+            <div class="wrap-menu-desktop bg-light">
+                <nav class="limiter-menu-desktop container">
+
+                    <!-- Website logo -->
+                    <a href="{% url 'home' %}" class="logo">
+                        <img src="{% static 'user_home/images/logo/gadgethub.png' %}">
+                    </a>
+
+
+                    <!--Navbar Elements -->
+                    <div class="menu-desktop">
+                        <ul class="main-menu">
+                            <li>
+                                <a href="{% url 'home' %}">Home</a>
+                            </li>
+
+                            <li>
+                                <a href="{% url 'all_products' %}">All Products</a>
+                            </li>
+
+                            <li class="main-menu">
+                                <a href="#">Categories</a>
+
+                                <ul class="sub-menu">
+                                    {% for category in categories %}
+                                    <li><a href="{{ category.get_url }}">{{ category.category_name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+
+                            </li>
+
+                            <li class="main-menu">
+                                <a href="#">Brands</a>
+                                <ul class="sub-menu">
+                                    {% for brand in brands %}
+                                    <li><a href="{{brand.get_url}}">{{brand.brand_name}}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#">Contact</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Search and cart icons -->
+                    <div class="wrap-icon-header flex-w flex-r-m">
+                        <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+
+                        <div class="menu-desktop">
+                            <ul class="main-menu">
+                                <li>
+                                    <a href="#">
+                                        <i style="font-size: 20px;" class="fa fa-user"></i>
+                                        {% if user.is_authenticated %}
+                                        <span class="mx-1">{{user.first_name}}</span>
+                                        {% endif %}
+                                    </a>
+                                    <ul class="sub-menu">
+                                        {% if user.is_authenticated %}
+                                        <li><a href="{% url 'dashboard' %}">My Profile</a></li>
+                                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                                        {% else %}
+                                        <li><a href="{% url 'signup' %}">Signup</a></li>
+                                        <li><a href="{% url 'login' %}">Login</a></li>
+                                        {% endif %}
+
+                                    </ul>
+                            </ul>
+                            </li>
+                            </ul>
+                        </div>
+
+                        <a href="{% url 'cart' %}">
+                            <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
+                                data-notify="{{cart_count}}">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </div>
+                        </a>
+
+                        <a href="{% url 'wishlist' %}"
+                            class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
+                            data-notify="{{wishlist_count}}">
+                            <i class="fa-regular fa-heart"></i>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+            
+
+        </div>
+
+        <div class="container-menu-desktop">
+        </div>
+
+
+        <!-- Responsive header -->
+        <div class="wrap-header-mobile">
+
+            <!-- Logo Responsive -->
+            <div class="logo-mobile">
+                <a href="{% url 'home' %}"><img src="{% static 'user_home/images/logo/gadgethub.png' %}"
+                        alt="IMG-LOGO"></a>
+            </div>
+
+            <!-- Icon headers -->
+            <div class="wrap-icon-header flex-w flex-r-m m-r-15">
+                <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 js-show-modal-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+
+                {% comment %} <a href="{% url 'dashboard' %}">
+                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                </a>
+
+                <a href="#">
+                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
+                        data-notify="{{cart_count}}">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </div>
+                </a>
+
+                <a href="#"
+                    class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
+                    data-notify="0">
+                    <i class="fa-regular fa-heart"></i>
+                </a> {% endcomment %}
+            </div>
+
+            <!-- Menubar admin -->
+            <div class="btn-show-menu-mobile hamburger hamburger--squeeze">
+                <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                </span>
+            </div>
+
+        </div>
+
+
+        <!-- Collpsed menu -->
+        <div class="menu-mobile">
+
+            <ul class="main-menu-m">
+                <li><a href="{% url 'all_products' %}">All Products</a></li>
+
+                <li>
+                    <a>Categories</a>
+                    <ul class="sub-menu-m">
+                        {% for category in categories %}
+                        <li><a href="{{ category.get_url }}">{{ category.category_name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <span class="arrow-main-menu-m">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </span>
+                </li>
+
+                <li>
+                    <a>Brands</a>
+                    <ul class="sub-menu-m">
+                        {% for brand in brands %}
+                        <li><a href="{{ brand.get_url }}">{{ brand.brand_name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <span class="arrow-main-menu-m">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </span>
+                </li>
+
+                <li><a href="{% url 'cart' %}">My Cart</a></li>
+                <li><a href="{% url 'wishlist' %}">My Wishlist</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'dashboard' %}">Profile</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+
+                {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'signup' %}">Signup</a></li>
+                {% endif %}
+
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+
+        <!-- Search modal -->
+        <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
+            <div class="container-search-header">
+                <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
+                    <img src="{% static 'user_home/images/icons/icon-close2.png' %}" alt="CLOSE">
+                </button>
+
+                <form action="{% url 'search' %}" class="wrap-search-header flex-w p-l-15" method="GET">
+                    <input class="plh3" type="text" placeholder="Search..." name="keyword">
+                    <button class="flex-c-m trans-04 me-3" type="submit">
+                        <i class="zmdi zmdi-search"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+
+
+
+    <!-- =========================================================================================================================================== -->
+    {% block content %}{% endblock content %}
+    <!-- =========================================================================================================================================== -->
+
+
+    <!-- Footer -->
+    <footer class="bg3 p-t-75 p-b-32">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-lg-3 p-b-50">
+                    <h4 class="stext-301 cl0 p-b-30">
+                        Categories
+                    </h4>
+
+                    <ul>
+
+                        {% for category in categories %}
+                        <li class="p-b-10">
+                            <a href="{{category.get_url}}" class="stext-107 cl7 hov-cl1 trans-04">
+                                {{category.category_name}}
+                            </a>
+                        </li>
+                        {% endfor %}
+
+
+
+                    </ul>
+                </div>
+
+                <div class="col-sm-6 col-lg-3 p-b-50">
+                    <h4 class="stext-301 cl0 p-b-30">
+                        Help
+                    </h4>
+
+                    <ul>
+                        <li class="p-b-10">
+                            <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                                Track Order
+                            </a>
+                        </li>
+
+                        <li class="p-b-10">
+                            <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                                Returns
+                            </a>
+                        </li>
+
+                        <li class="p-b-10">
+                            <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                                Shipping
+                            </a>
+                        </li>
+
+                        <li class="p-b-10">
+                            <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                                FAQs
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-sm-6 col-lg-3 p-b-50">
+                    <h4 class="stext-301 cl0 p-b-30">
+                        GET IN TOUCH
+                    </h4>
+
+                    <p class="stext-107 cl7 size-201">
+                        Any questions? Let us know in store at 8th floor, 379 Hudson St, New York, NY 10018 or call us
+                        on +91 8943631166
+                    </p>
+
+                    <div class="p-t-27">
+                        <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+
+                        <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+                            <i class="fa fa-instagram"></i>
+                        </a>
+
+                        <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+                            <i class="fa fa-pinterest-p"></i>
+                        </a>
+
+                        <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+                            <i class="fa-brands fa-twitter"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-3 p-b-50">
+                    <h4 class="stext-301 cl0 p-b-30">
+                        Newsletter
+                    </h4>
+
+                    <form>
+                        <div class="wrap-input1 w-full p-b-4">
+                            <input class="input1 bg-none plh1 stext-107 cl7" type="text" name="email"
+                                placeholder="aneesanz221@gmail.com">
+                            <div class="focus-input1 trans-04"></div>
+                        </div>
+
+                        <div class="p-t-18">
+                            <button class="flex-c-m stext-101 cl0 size-103 bg1 bor1 hov-btn2 p-lr-15 trans-04">
+                                Subscribe
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="p-t-40">
+                <div class="flex-c-m flex-w p-b-18">
+                    <a href="#" class="m-all-1">
+                        <img src="{% static 'user_home/images/icons/icon-pay-01.png' %}" alt="ICON-PAY">
+                    </a>
+
+                    <a href="#" class="m-all-1">
+                        <img src="{% static 'user_home/images/icons/icon-pay-03.png' %}" alt="ICON-PAY">
+                    </a>
+
+                    <a href="#" class="m-all-1">
+                        <img src="{% static 'user_home/images/icons/icon-pay-03.png' %}" alt="ICON-PAY">
+                    </a>
+
+                    <a href="#" class="m-all-1">
+                        <img src="{% static 'user_home/images/icons/icon-pay-04.png' %}" alt="ICON-PAY">
+                    </a>
+
+                    <a href="#" class="m-all-1">
+                        <img src="{% static 'user_home/images/icons/icon-pay-05.png' %}" alt="ICON-PAY">
+                    </a>
+                </div>
+
+                <p class="stext-107 cl6 txt-center">
+                    Copyright &copy;
+                    <script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i
+                        class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com"
+                        target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com"
+                        target="_blank">ThemeWagon</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <!--===============================================================================================-->
+    <script src="{% static 'user_home/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+    <script src="https://kit.fontawesome.com/ca6b256fcb.js" crossorigin="anonymous"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'user_home/vendor/animsition/js/animsition.min.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'user_home/vendor/bootstrap/js/popper.js' %}"></script>
+    <script src="{% static 'user_home/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'user_home/vendor/select2/select2.min.js' %}"></script>
+    <script>
+        $(".js-select2").each(function () {
+            $(this).select2({
+                minimumResultsForSearch: 20,
+                dropdownParent: $(this).next('.dropDownSelect2')
+            });
+        })
+    </script>
+    <!--===============================================================================================-->
+    <script src="{% static 'user_home/vendor/daterangepicker/moment.min.js' %}"></script>
+    <script src="{% static 'user_home/vendor/daterangepicker/daterangepicker.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'user_home/vendor/slick/slick.min.js' %}"></script>
+    <script src="{% static 'user_home/js/slick-custom.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'user_home/vendor/parallax100/parallax100.js' %}"></script>
+    <script>
+        $('.parallax100').parallax100();
+    </script>
+    <!--===============================================================================================-->
+    <script src="{% static 'user_home/vendor/MagnificPopup/jquery.magnific-popup.min.js' %}"></script>
+    <script>
+        $('.gallery-lb').each(function () { // the containers for all your galleries
+            $(this).magnificPopup({
+                delegate: 'a', // the selector for gallery item
+                type: 'image',
+                gallery: {
+                    enabled: true
+                },
+                mainClass: 'mfp-fade'
+            });
+        });
+    </script>
+    <!--===============================================================================================-->
+    <script src="{% static 'user_home/vendor/isotope/isotope.pkgd.min.js' %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'user_home/vendor/sweetalert/sweetalert.min.js' %}"></script>
+    <script>
+        $('.js-addwish-b2').on('click', function (e) {
+            e.preventDefault();
+        });
+
+        $('.js-addwish-b2').each(function () {
+            var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
+            $(this).on('click', function () {
+                swal(nameProduct, "is added to wishlist !", "success");
+
+                $(this).addClass('js-addedwish-b2');
+                $(this).off('click');
+            });
+        });
+
+        $('.js-addwish-detail').each(function () {
+            var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
+
+            $(this).on('click', function () {
+                swal(nameProduct, "is added to wishlist !", "success");
+
+                $(this).addClass('js-addedwish-detail');
+                $(this).off('click');
+            });
+        });
+
+        /*---------------------------------------------*/
+
+        $('.js-addcart-detail').each(function () {
+            var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
+            $(this).on('click', function () {
+                swal(nameProduct, "is added to cart !", "success");
+            });
+        });
+
+    </script>
+    <!--===============================================================================================-->
+    <script src="{% static 'user_home/vendor/perfect-scrollbar/perfect-scrollbar.min.js' %}"></script>
+    <script>
+        $('.js-pscroll').each(function () {
+            $(this).css('position', 'relative');
+            $(this).css('overflow', 'hidden');
+            var ps = new PerfectScrollbar(this, {
+                wheelSpeed: 1,
+                scrollingThreshold: 1000,
+                wheelPropagation: false,
+            });
+
+            $(window).on('resize', function () {
+                ps.update();
+            })
+        });
+    </script>
+    <!--===============================================================================================-->
+    <script src="{% static 'user_home/js/main.js' %}"></script>
+
+</body>
+
+</html>

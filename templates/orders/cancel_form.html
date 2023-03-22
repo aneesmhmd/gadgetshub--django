@@ -1,0 +1,91 @@
+{% extends 'base_user.html' %}
+{% load static %}
+
+
+{% block title %}Order Cancellation{% endblock %}
+
+{% block link %}
+<link rel="stylesheet" type="text/css" href="{% static 'user_home/css/cancel_form.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<div class="form-body d-flex align-items-center justify-content-center">
+    <div class="row">
+        <div class="form-holder">
+            <div class="form-content">
+                <div class="form-items">
+                    <h3>Cancellation form</h3>
+                    <p>Fill the datas below.</p>
+                    <form class="requires-validation" novalidate>
+
+                        <div class="col-md-12">
+                            <label> Username </label>
+                            <input class="form-control" type="text" name="name" placeholder="{{user.first_name}}" value="{{user.first_name}}" required>
+                            {% comment %} <div class="valid-feedback">Username field is valid!</div> {% endcomment %}
+                            <div class="invalid-feedback">Username field cannot be blank!</div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <input class="form-control" type="email" name="email" placeholder="E-mail Address" required>
+                            {% comment %} <div class="valid-feedback">Email field is valid!</div> {% endcomment %}
+                            <div class="invalid-feedback">Email field cannot be blank!</div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <select class="form-select mt-3" required>
+                                <option selected disabled value="">Order placed by mistake</option>
+                                <option value="">Dont need the product anymore</option>
+                                <option value="">Quality is not as expected</option>
+                                <option value="">Got product for lower price form somewhere else</option>
+                            </select>
+                            {% comment %} <div class="valid-feedback">You selected a position!</div> {% endcomment %}
+                            <div class="invalid-feedback">Please select a position!</div>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <input class="form-control" type="password" name="password" placeholder="Password" required>
+                            {% comment %} <div class="valid-feedback">Password field is valid!</div> {% endcomment %}
+                            <div class="invalid-feedback">Password field cannot be blank!</div>
+                        </div>
+
+
+                        <!-- <div class="col-md-12 mt-3">
+                            <label class="mb-3 mr-1" for="gender">Gender: </label>
+
+                            <input type="radio" class="btn-check" name="gender" id="male" autocomplete="off" required>
+                            <label class="btn btn-sm btn-outline-secondary" for="male">Male</label>
+
+                            <input type="radio" class="btn-check" name="gender" id="female" autocomplete="off" required>
+                            <label class="btn btn-sm btn-outline-secondary" for="female">Female</label>
+
+                            <input type="radio" class="btn-check" name="gender" id="secret" autocomplete="off" required>
+                            <label class="btn btn-sm btn-outline-secondary" for="secret">Secret</label>
+                            <div class="valid-feedback mv-up">You selected a gender!</div>
+                            <div class="invalid-feedback mv-up">Please select a gender!</div>
+                        </div> -->
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                            <label class="form-check-label">I confirm that I dont need the product anymore</label>
+                            <div class="invalid-feedback">Please confirm that you dont need the product anymore</div>
+                        </div>
+
+
+                        <div class="form-button mt-3">
+                            <button id="submit" type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'user_home/js/cancel_form.js' %}"></script>
+
+
+
+{% endblock %}
