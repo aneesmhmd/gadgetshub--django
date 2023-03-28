@@ -7,7 +7,7 @@ from django.utils.text import slugify
 # Category model
 class Category(models.Model):
     category_name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=100,unique=True)
+    slug = models.SlugField(max_length=100,unique=True,blank=True)
     description = models.TextField(max_length=255,blank=True)
     category_image = models.ImageField(upload_to='categories')
 

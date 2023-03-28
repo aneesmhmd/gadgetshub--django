@@ -242,6 +242,8 @@ def add_address(request):
         if address_form.is_valid():
             address_form = address_form.save(commit=False)
             address_form.user = request.user
+            Address.objects.filter(user=request.user).update(default=False)
+            address_form.default = True
             address_form.save()
             return HttpResponseRedirect(reverse("dashboard"))
     else:

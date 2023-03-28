@@ -99,11 +99,8 @@
 
                         {% include 'alerts.html' %}
                         
-                        {% comment %} <div class="row mt-1 text-center">
-                            <div class="col-sm-12">
-                                <h4 class="mb-0 fw-bold text-dark">Profile Details</h4>
-                            </div>
-                        </div> {% endcomment %}
+                       
+                        
                         <hr>
 
                         <div class="row mt-1">
@@ -177,6 +174,7 @@
         {% if not a.id == default.default.id %}
         <!-- <h3>{{forloop.counter}} address {{default.default.id}}</h3> -->
         <div class="card mb-2">
+
             <div class="card-body text-dark">
                 {% if a.default %}
                 Default Address
@@ -185,25 +183,33 @@
                 <h5 class="card-title fw-bold">{{a.full_name}}</h5>
                 <h6 class="card-title">{{a.house_name}} (H), {{a.city}}</h6>
                 <p class="card-text">{{a.pincode}} </p>
+
                 <div>
 
 
-                    <a class="btn btn-warning px-4 py-1" href="{% url 'edit_address' a.id 1 %}">
-                        Edit
+                    <a class="btn btn-warning" href="{% url 'edit_address' a.id 1 %}">
+                        {% comment %} <i class="fa-solid fa-pen-to-square fa-xl text-warning"></i> {% endcomment %}Edit
                     </a>
 
-                    <a class="btn btn-danger px-4 py-1" data-bs-toggle="modal" data-bs-target="#delete_model-{{forloop.counter}}"
-                        href="#">
-                        Delete
+                    <a class="btn btn-danger" href="" class="m-l-10" data-bs-toggle="modal" data-bs-target="#delete_model-{{forloop.counter}}">
+                        {% comment %} <i class="fa-solid fa-trash fa-lg text-danger"></i>
+                         {% endcomment %}Delete
                     </a>
 
                     {%if not a.default%}
-                    <a class="btn btn-dark fw-bold px-4 py-1" href="{% url 'default_address' a.id 1 %}">
-                        Make Default
+                    <a class="btn btn-outline-success" class="m-l-10" href="{% url 'default_address' a.id 1 %}">
+                        <i class="fa-solid fa-circle-check fa-xl"></i>
                     </a>
                     {% endif %}
 
-                    <!-- Modal -->
+                    {% comment %} <a href="" class="btn btn-outline-dark" class="m-l-10" data-bs-toggle="modal" data-bs-target="#view_address-{{forloop.counter}}">
+                        <i class="fa-solid fa-eye fa-xl text-warning"></i>
+                    </a> {% endcomment %}
+
+
+                    
+
+                    <!-- Delete Modal -->
                     <div class="modal fade" id="delete_model-{{forloop.counter}}" tabindex="-1"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -219,18 +225,21 @@
 
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
+                                    <button type="button" class="btn btn-dark"
                                         data-bs-dismiss="modal">Close</button>
                                     <form action="{% url 'delete_address' a.id 1 %}" style="float: right;" method="post" class="float-right d-inline">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-primary">Delete</button>
+                                        <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
+
             </div>
+
         </div>
         {% endif %}
         {% endfor %}

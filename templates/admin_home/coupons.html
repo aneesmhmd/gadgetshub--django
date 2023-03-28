@@ -1,0 +1,257 @@
+{% extends 'base_admin.html' %}
+
+{% load static %}
+{% block title %}Coupon managenent{% endblock %}
+
+{% block content %}
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Coupon management</h1>
+    </div> <!-- End Page Title -->
+
+    <!-- Add brand button -->
+    <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#addcoupon">Add Coupon</button>
+
+
+
+    <div class="col-12">
+        <div class="card recent-sales overflow-auto">
+
+
+            <div class="card-body">
+                <h5 class="card-title">Coupons List</h5>
+
+                {% include 'alerts.html' %}
+
+                <table class="table table-borderless datatable">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Coupon code</th>
+                            <th scope="col">Discount Price</th>
+                            <th scope="col">Min amount</th>
+                            <th scope="col">Action</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for c in coupons %}
+                        <tr>
+                            <th scope="row">{{c.id}}</th>
+                            <td>{{c.coupon_code}}</td>
+                            <td>₹{{c.discount_price}}</td>
+                            <td>₹{{c.min_amount}}</td>
+                            <td>
+                            <a href="{% url 'coupon_status' c.id %}">
+                                {% if c.is_expired %}
+                                <i class="fa-solid fa-unlock fa-lg text-success ms-3"></i>
+                                {% else %}
+                                <i class="fa-solid fa-lock fa-lg text-danger ms-3"></i>
+                                {% endif %}
+                            </a>
+                            </td>
+
+                            <td>
+                                {% if c.is_expired %}
+                                <span class="badge bg-danger">Expired</span>
+                                {% else %}
+                                <span class="badge bg-success">Active</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+
+                                <!--  Edit button -->
+                                <button type="button" class="btn" data-bs-toggle="modal"
+                                    data-bs-target="#edit{{ forloop.counter }}">
+                                    <i class="fa-sharp fa-solid fa-pen-to-square fa-xl text-warning"></i>
+                                </button>
+
+                                <!-- Edit Modal -->
+                                <div class="modal fade" id="edit{{forloop.counter}}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Coupon</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+
+                                            <!-- Edit Name-->
+                                            <div class="modal-body">
+
+                                                <form required action="{% url 'edit_coupon' c.id %}" class="mx-1 mx-md-4" method="POST">
+                                                    {% csrf_token %}
+
+                                                    <!-- Coupon code -->
+                                                    <div class="d-flex flex-row align-items-center mb-4">
+                                                        <div class="form-outline flex-fill mb-0">
+                                                            <input type="text" value="{{ c.coupon_code }}" id="form3Example1c" 
+                                                                            class="form-control" name="coupon_code" required/>
+                                                            <label class="form-label" for="form3Example1c">Coupon code</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <!-- Discount Price -->
+                                                        <div class="d-flex flex-row align-items-center mb-3 col-md-6">
+                                                          <div class="form-outline flex-fill mb-0">
+                                                            <input type="number" id="form3Example1c" class="form-control" name="dis_price" value="{{c.discount_price}}" required/>
+                                                            <label class="form-label" for="form3Example1c">Discount Price</label>
+                                                          </div>
+                                                        </div>
+                              
+                                                        <!-- Min amount -->
+                                                        <div class="d-flex flex-row align-items-center mb-3 col-md-6">
+                                                          <div class="form-outline flex-fill mb-0">
+                                                            <input type="number" id="form3Example1c" class="form-control" name="min_amount" value="{{c.min_amount}}" required/>
+                                                            <label class="form-label" for="form3Example1c">Min amount</label>
+                                                          </div>
+                                                        </div>
+                              
+                                                    </div>
+
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-dark"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-dark">Apply</button>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end edit category -->
+                            </td>
+
+                            <td>
+
+                                    <!-- Delete Button -->
+                                    <button type="button" class="btn" data-bs-toggle="modal"
+                                    data-bs-target="#deletecoupon-{{ forloop.counter }}">
+                                    <i class="fa-sharp fa-solid fa-trash fa-lg text-danger ms-2"></i>
+                                </button>
+
+
+                                <!--Modal: modalConfirmDelete-->
+                                <div class="modal fade" id="deletecoupon-{{forloop.counter}}" tabindex="-1"
+                                    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+                                        <!--Content-->
+                                        <div class="modal-content text-center">
+                                            <!--Header-->
+                                            <div class="modal-header d-flex justify-content-center">
+                                                <p class="heading text-dark">Do you want to delete
+                                                    <b>{{c.coupon_code}}</b>?
+                                            </div>
+
+                                            <!--Body-->
+                                            <div class="modal-body">
+                                                <i class="fas fa-times fa-4x animated rotateIn text-dark"></i>
+                                            </div>
+
+                                            <!--Footer-->
+                                            <div class="modal-footer flex-center">
+                                                <a href="{% url 'remove_coupon' c.id %}" class="btn  btn-outline-danger">Yes</a>
+                                                <button type="button" class="btn btn-danger waves-effect text-light"
+                                                    data-bs-dismiss="modal">No</a>
+                                            </div>
+                                        </div> 
+                                        <!--/.Content-->
+                                    </div>
+                                </div>
+
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+
+
+            </div>
+
+
+
+
+
+        </div>
+
+        
+
+
+        <!-- Add Modal -->
+        <div class="modal fade" id="addcoupon" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Coupon</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+
+                    <!-- Add brand name -->
+                    <div class="modal-body">
+                        <form required action="{% url 'add_coupon' %}" enctype="multipart/form-data"
+                            class="mx-1 mx-md-4" method="POST">
+                            {% csrf_token %}
+
+                             <!-- Coupon code -->
+                             <div class="d-flex flex-row align-items-center mb-4">
+                                <div class="form-outline flex-fill mb-0">
+                                    <input type="text" id="form3Example1c" 
+                                                    class="form-control" name="coupon_code" required/>
+                                    <label class="form-label" for="form3Example1c">Coupon code</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <!-- Discount Price -->
+                                <div class="d-flex flex-row align-items-center mb-3 col-md-6">
+                                  <div class="form-outline flex-fill mb-0">
+                                    <input type="number" id="form3Example1c" class="form-control" name="dis_price" value="{{c.discount_price}}" required/>
+                                    <label class="form-label" for="form3Example1c">Dissount Price</label>
+                                  </div>
+                                </div>
+      
+                                <!-- Min amount -->
+                                <div class="d-flex flex-row align-items-center mb-3 col-md-6">
+                                  <div class="form-outline flex-fill mb-0">
+                                    <input type="number" id="form3Example1c" class="form-control" name="min_amount" required/>
+                                    <label class="form-label" for="form3Example1c">Min amount</label>
+                                  </div>
+                                </div>
+      
+                            </div>
+
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-dark"
+                                    data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-dark">Apply</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end edit category -->
+
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    {% endblock %}

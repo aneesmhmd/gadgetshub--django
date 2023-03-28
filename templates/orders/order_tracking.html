@@ -86,22 +86,9 @@
 
                             {% elif item.order_status == 'Cancelled' %}
                             <h5> Order Cancelled. Amount will be refunded</h5>
-                            {% comment %} <li class="step0 active" id="step1"><spanstyle="margin-left: 22px; margin-top:
-                                    12px;">CANCELLED</span></li>
-                            <li class="step0 text-right" id="step3">
-                                <spanstyle="">REFUNDED</span>
-                            </li> {% endcomment %}
-
 
                             {% elif item.order_status == 'Refunded' %}
                             <h5>Refund completed</h5>
-
-                            {% comment %} <li class="step0 active" id="step1"><spanstyle="margin-left: 22px; margin-top:
-                                    12px;">CANCELLED</span></li>
-                            <li class="step0 active text-right" id="step3"><spanstyle="margin-right:
-                                    22px;">REFUNDED</span></li>
-                            {% endcomment %}
-
 
                             {% endif %}
 
@@ -112,7 +99,7 @@
                     </div>
 
                     <div class="card-footer p-4">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between">    
 
                             <div class="border-start h-100"></div>
 

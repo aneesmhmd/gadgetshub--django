@@ -15,7 +15,7 @@
                         <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'dashboard' %}">User
                                 Profile</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Add Address</li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit address</li>
                     </ol>
                 </nav>
             </div>
@@ -46,16 +46,28 @@
                         {% csrf_token %}
                         <label class="small fw-bold">{{ form.full_name.label }}</label>
                         {{ form.full_name }}
-                        <label class="small fw-bold">{{ form.phone.label }}</label>
-                        {{ form.phone }}
-                        <label class="small fw-bold">{{ form.state.label }}</label>
-                        {{ form.state }}
-                        <label class="small fw-bold">{{ form.city.label }}</label>
-                        {{ form.city }}
-                        <label class="small fw-bold">{{ form.pincode.label }}</label>
-                        {{ form.pincode }}
+
                         <label class="small fw-bold">{{ form.house_name.label }}</label>
                         {{ form.house_name }}
+
+                        <label class="small fw-bold">{{ form.phone_number.label }}</label>
+                        {{ form.phone_number }}
+
+                        <label class="small fw-bold">{{ form.city.label }}</label>
+                        {{ form.city }}
+
+                        <label class="small fw-bold">{{ form.district.label }}</label>
+                        {{ form.district }}
+                        
+                        <label class="small fw-bold">{{ form.state.label }}</label>
+                        {{ form.state }}
+
+                        <label class="small fw-bold">{{ form.country.label }}</label>
+                        {{ form.country }}
+
+                        <label class="small fw-bold">{{ form.pin.label }}</label>
+                        {{ form.pin }}
+
                         <button class="btn btn-dark cap btn-block py-2 mb-4 mt-4 fw-bold w-100" 
                         type="submit" onclick="submitform()">Save Changes</button>
                 </form>

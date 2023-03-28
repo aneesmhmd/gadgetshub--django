@@ -10,80 +10,30 @@
 <section class="section-slide">
 	<div class="wrap-slick1">
 		<div class="slick1">
-			<div class="item-slick1" style="background-image: url({% static 'user_home/images/earpodbanner.jpg' %})">
-				<div class="container h-full">
-					<div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-						<div class="layer-slick1 animated visible-false" data-appear="fadeInDown" data-delay="0">
-							<span class="ltext-101 cl2 respon2">
-								New Arrivals
-							</span>
-						</div>
 
-						<div class="layer-slick1 animated visible-false" data-appear="fadeInUp" data-delay="800">
-							<h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
-								NEW SEASON
-							</h2>
-						</div>
-
-						<div class="layer-slick1 animated visible-false" data-appear="zoomIn" data-delay="1600">
-							{% comment %} <a href="product.html"
-								class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-								Book now
-							</a> {% endcomment %}
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="item-slick1" style="background-image: url({% static 'user_home/images/samsung.jpg' %})">
+			<!-- Banner management -->
+			{% for banner in banners  %}
+			<div style="background-image:url({{banner.image.url}})"  class="item-slick1">
 				<div class="container h-full">
 					<div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
 						<div class="layer-slick1 animated visible-false" data-appear="rollIn" data-delay="0">
 							<span class="ltext-101 cl2 respon2">
-								Samsung S22 Ultra
+								{{ banner.text_one }}
 							</span>
 						</div>
 
 						<div class="layer-slick1 animated visible-false" data-appear="lightSpeedIn" data-delay="800">
 							<h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1 ">
-								Unleash the Power
+								{{ banner.text_two }}
 							</h2>
 						</div>
 
-						{% comment %} <div class="layer-slick1 animated visible-false" data-appear="slideInUp" data-delay="1600">
-							<a href="product.html"
-								class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-								Book Now
-							</a>
-						</div> {% endcomment %}
 					</div>
 				</div>
 			</div>
+			{% endfor %}
 
-			<div class="item-slick1" style="background-image: url({% static 'user_home/images/smbanner.jpg' %});">
-				<div class="container h-full">
-					<div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-						<div class="layer-slick1 animated visible-false" data-appear="rotateInDownLeft" data-delay="0">
-							<span class="ltext-101 cl2 respon2">
-								Smartwatches
-							</span>
-						</div>
 
-						<div class="layer-slick1 animated visible-false" data-appear="rotateInUpRight" data-delay="800">
-							<h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
-								Be Smart
-							</h2>
-						</div>
-
-						{% comment %} <div class="layer-slick1 animated visible-false" data-appear="rotateIn" data-delay="1600">
-							<a href="product.html"
-								class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-								Book Now
-							</a>
-						</div> {% endcomment %}
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
 </section>
@@ -135,18 +85,7 @@
 			</h3>
 		</div>
 
-		{% comment %} <div class="flex-w flex-sb-m p-b-52">
-			<div class="flex-w flex-l-m filter-tope-group m-tb-10">
-				<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">
-					All Products
-				</button>
-			</div>
 
-		</div> {% endcomment %}
-
-
-
-		{% comment %} ================================== {% endcomment %}
 		<div class="row isotope-grid">
 			{% for product in products %}
 			<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
@@ -164,18 +103,6 @@
 												<div class="block2-txt-child1 flex-col-l ">
 													<a href="{{ product.get_url }}" class="stext-104 text-dark cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
 														{{ product.product_name }}
-													</a>
-												</div>
-
-												<div class="block2-txt-child2 flex-r p-t-3">
-													<a href="#"
-														class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-														<img class="icon-heart1 dis-block trans-04"
-															src="{% static 'user_home/images/icons/icon-heart-01.png' %}"
-															alt="ICON">
-														<img class="icon-heart2 dis-block trans-04 ab-t-l"
-															src="{% static 'user_home/images/icons/icon-heart-02.png' %}"
-															alt="ICON">
 													</a>
 												</div>
 											</div>

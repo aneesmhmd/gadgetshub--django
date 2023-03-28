@@ -26,4 +26,12 @@ urlpatterns = [
     path('cart/', include('cart.urls')),
     path('wishlist/', include('wishlist.urls')),
     path('order/', include('orders.urls')) ,
+
+    # Admin Side
+    path('adm/', include('admin_accounts.urls')) ,
+    path('adm/store/', include('admin_products.urls')) ,
+    path('adm/category/', include('admin_categories.urls')),
+    path('adm/orders/', include('admin_orders.urls')),
+    path('adm/banners/', include('banner.urls')),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

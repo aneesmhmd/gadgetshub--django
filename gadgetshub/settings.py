@@ -48,7 +48,13 @@ INSTALLED_APPS = [
     'cart',
     'wishlist',
     'orders',
+    'banner',
+    'admin_accounts',
+    'admin_products',
+    'admin_categories',
+    'admin_orders',
 ]
+  
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -75,6 +81,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'category.context_processor.menu_links',
                 'store.context_processor.counter',
+                'admin_accounts.context_processor.revenue_calculator',
             ],
         },
     },

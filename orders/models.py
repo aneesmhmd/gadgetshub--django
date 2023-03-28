@@ -27,7 +27,7 @@ class Order(BaseModel):
     user = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
     delivery_address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, null=True, blank=True)
-    ordered_date = models.DateTimeField(auto_now_add=True)
+    ordered_date = models.DateField(auto_now_add=True, editable=False)
 
     def __str__(self) -> str:
         return f'{self.id} of {self.user}'
@@ -37,7 +37,6 @@ class OrderItem(models.Model):
     STATUS = (
         ('Ordered', 'Ordered'),
         ('Shipped', 'Shipped'),
-        ('Out for delivery', 'Out for delivery'),
         ('Delivered', 'Delivered'),
         ('Cancelled', 'Cancelled'),
         ('Refunded', 'Refunded')
@@ -52,14 +51,13 @@ class OrderItem(models.Model):
     item_total = models.PositiveIntegerField()
 
     def __str__(self):
-        return self.product.product_name
+        return self.product.product_name    
     
 
 
 class ReviewRating(models.Model):
     user = models.ForeignKey(Account,on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    title = models.CharField(max_length=50)
     review = models.TextField(blank=True, null=True)
     rating = models.FloatField()
     status = models.BooleanField(default=True)

@@ -7,11 +7,12 @@ from django.core.paginator import Paginator
 from wishlist.models import WishlistItem, Wishlist
 from orders.models import ReviewRating
 from orders.models import OrderItem
+
 # Create your views here.
 
+
+
 # All/Brandwise/Categorywise products
-
-
 def all_products(request, category_slug=None, brand_slug=None):
 
     try:
@@ -24,6 +25,20 @@ def all_products(request, category_slug=None, brand_slug=None):
             brands = Brand.objects.get(slug=brand_slug)
             products = Product.objects.filter(
                 brand=brands, is_available=True).order_by('id')
+            
+        elif request.GET.get('min'):
+            min = request.GET.get('min')
+            max = request.GET.get('max')
+            products = Product.objects.filter(price__range=(min, max))
+
+        elif request.GET.get('sortby'):
+            sort = request.GET.get('sortby')
+            if sort == 'newest':
+                products = Product.objects.all().order_by('-created_date')
+            elif sort == 'low-to-high':
+                products = Product.objects.all().order_by('price')
+            elif sort == 'high-to-low':
+                products = Product.objects.all().order_by('-price')
 
         else:
             products = Product.objects.all().filter(is_available=True).order_by('id')
@@ -37,6 +52,7 @@ def all_products(request, category_slug=None, brand_slug=None):
 
     except Exception as e:
         pass  # custom 404 page
+
 
 
 # Single product view
@@ -65,14 +81,19 @@ def product_detail(request, category_slug, product_slug):
             })
 
         if request.user.is_authenticated:
-            wishlist = Wishlist.objects.get(user=request.user)
-            in_wishlist = WishlistItem.objects.filter(wishlist=wishlist, product__product_name=single_product)
-            context['in_wishlist'] = in_wishlist
+            try:
+                wishlist = Wishlist.objects.get(user=request.user)
+                in_wishlist = WishlistItem.objects.filter(wishlist=wishlist, product__product_name=single_product)
+                context['in_wishlist'] = in_wishlist
+            except:
+                pass
 
         return render(request, 'store/product_detail.html', context)
 
     except Exception as e:
         raise e
+
+
 
 
 # Search

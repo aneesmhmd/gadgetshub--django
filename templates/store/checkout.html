@@ -55,18 +55,19 @@
                     <div>
     
     
-                        <a class="btn btn-warning px-4 py-1" href="{% url 'edit_address' a.id 2 %}">
+                        <a class="btn btn-warning px-4" href="{% url 'edit_address' a.id 2 %}">
                             Edit
                         </a>
     
-                        <a class="btn btn-danger px-4 py-1" data-bs-toggle="modal" data-bs-target="#delete_model-{{forloop.counter}}"
+                        <a class="btn btn-danger px-4" data-bs-toggle="modal" data-bs-target="#delete_model-{{forloop.counter}}"
                             href="#">
                             Delete
                         </a>
     
                         {% if not a.default %}
-                        <a class="btn btn-dark fw-bold fw-bold px-4 py-1" href="{% url 'default_address' a.id 2 %}">
-                            Default
+                        <a class="btn btn-outline-success fw-bold fw-bold " href="{% url 'default_address' a.id 2 %}">
+                            <i class="fa-solid fa-circle-check fa-xl"></i>
+
                         </a>
                         {% endif %}
     

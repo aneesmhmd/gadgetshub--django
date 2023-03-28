@@ -1,0 +1,259 @@
+{% extends 'base_admin.html' %}
+
+{% load static %}
+{% block title %}Category management{% endblock %}
+
+{% block content %}
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>All Categories</h1>
+    </div> <!-- End Page Title -->
+
+    <!-- Add category button -->
+    <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#addcategory">Add category</button>
+
+
+
+    <div class="col-12">
+        <div class="card recent-sales overflow-auto">
+
+
+            <div class="card-body">
+                <h5 class="card-title">Categories List</h5>
+
+                {% include 'alerts.html' %}
+                
+                <table class="table table-borderless datatable">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Category name</th>
+                            <th scope="col">Slug</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for c in categories %}
+                        <tr>
+                            <th scope="row">{{c.id}}</th>
+                            <th scope="row">
+                                <img src="/media/{{c.category_image}}" style="width:100px;" alt=..>
+                            </th>
+                            <td>{{c.category_name}}</td>
+                            <td>{{c.slug}}</td>
+                            <td>{{c.description}}</td>
+                            <td>
+
+                                <!--  Edit button -->
+                                <button type="button" class="btn" data-bs-toggle="modal"
+                                    data-bs-target="#edit{{ forloop.counter }}">
+                                    <i class="fa-sharp fa-solid fa-pen-to-square fa-xl text-warning"></i>
+                                </button>
+
+
+                                <!-- Edit Modal -->
+                                <div class="modal fade" id="edit{{forloop.counter}}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Cateory</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+
+                                            <!-- Edit Name-->
+                                            <div class="modal-body">
+                                                <form required action="{% url 'edit_category' c.id %}"
+                                                    enctype="multipart/form-data" class="mx-1 mx-md-4" method="POST">
+                                                    {% csrf_token %}
+                                                    <div class="d-flex flex-row align-items-center mb-4">
+                                                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                                                        <div class="form-outline flex-fill mb-0">
+                                                            <input type="text" value="{{ c.category_name }}"
+                                                                id="form3Example1c" class="form-control" name="cat_name"
+                                                                required />
+                                                            <label class="form-label"
+                                                                for="form3Example1c">Category</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Image Preview -->
+                                                    <div class="form-outline mb-3 m-l-10">
+                                                        <img src="{{ c.category_image.url }}" alt="{{p.porduct_name}}"
+                                                            style="width:70px; height:70px;">
+
+                                                    </div>
+
+
+                                                    <!-- Edit Image -->
+                                                    <div class="d-flex flex-row align-items-center mb-4">
+                                                        <i class="fa-regular fa-file-lines fa-lg me-3"></i>
+                                                        <div class="form-outline flex-fill mb-0">
+                                                            <input name='cat_image' type="file" id="form3Example4cg"
+                                                                class="form-control form-control" />
+                                                            <label class="form-label" for="form3Example4cg">Category
+                                                                Image</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- sLug  -->
+                                                    <div class="d-flex flex-row align-items-center mb-4">
+                                                        <i class="fa-solid fa-eye fa-lg me-3"></i>
+                                                        <div class="form-outline flex-fill mb-0">
+                                                            <input placeholder="{{c.slug}}" id="form3Example2c"
+                                                                class="form-control" disabled />
+                                                            <label class="form-label"
+                                                                for="form3Example2c">Slugfield</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Edit Description -->
+                                                    <div class="d-flex flex-row align-items-center mb-4">
+                                                        <i class="fa-regular fa-file-lines fa-lg me-3"></i>
+                                                        <div class="form-outline flex-fill mb-0">
+                                                            <input type="text" value="{{ c.description }}"
+                                                                id="form3Example3c" class="form-control"
+                                                                name="cat_description" required />
+                                                            <label class="form-label"
+                                                                for="form3Example3c">Description</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-dark"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-dark">Apply</button>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end edit category -->
+                            </td>
+
+                            <td>
+                                  <!-- Delete Button -->
+                                  <button type="button" class="btn" data-bs-toggle="modal"
+                                  data-bs-target="#deletecategory-{{ forloop.counter }}">
+                                  <i class="fa-sharp fa-solid fa-trash fa-lg text-danger ms-2"></i>
+                              </button>
+
+                                <!--Modal: modalConfirmDelete-->
+                                <div class="modal fade" id="deletecategory-{{forloop.counter}}" tabindex="-1"
+                                    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+                                        <!--Content-->
+                                        <div class="modal-content text-center">
+                                            <!--Header-->
+                                            <div class="modal-header d-flex justify-content-center">
+                                                <p class="heading text-dark">Do you want to delete
+                                                    <b>{{c.category_name}}</b>?
+                                            </div>
+
+                                            <!--Body-->
+                                            <div class="modal-body">
+                                                <i class="fas fa-times fa-4x animated rotateIn text-dark"></i>
+                                            </div>
+
+                                            <!--Footer-->
+                                            <div class="modal-footer flex-center">
+                                                <a href="{% url 'delete_category' c.id %}"
+                                                    class="btn  btn-outline-danger">Yes</a>
+                                                <button type="button" class="btn btn-danger waves-effect text-light"
+                                                    data-bs-dismiss="modal">No</a>
+                                            </div>
+                                        </div>
+                                        <!--/.Content-->
+                                    </div>
+                                </div>
+
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+
+
+            </div>
+
+
+
+
+
+        </div>
+
+
+        <!-- Add Modal -->
+        <div class="modal fade" id="addcategory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Category</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+
+                    <!-- Add Cat name -->
+                    <div class="modal-body">
+                        <form required action="{% url 'add_category' %}" enctype="multipart/form-data"
+                            class="mx-1 mx-md-4" method="POST">
+                            {% csrf_token %}
+                            <div class="d-flex flex-row align-items-center mb-4">
+                                <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <input type="text" id="form3Example1c" class="form-control" name="cat_name"
+                                        required />
+                                    <label class="form-label" for="form3Example1c">Category</label>
+                                </div>
+                            </div>
+
+
+                            <!-- Add Image -->
+                            <div class="d-flex flex-row align-items-center mb-4">
+                                <i class="fa-regular fa-file-lines fa-lg me-3"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <input class="form-control" type="file" id="formFile" name="cat_image" required>
+                                    <label class="form-label" for="formFile">Image</label>
+                                </div>
+                            </div>
+
+                            <!-- Add Description -->
+                            <div class="d-flex flex-row align-items-center mb-4">
+                                <i class="fa-regular fa-file-lines fa-lg me-3"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <input type="text" id="form3Example3c" class="form-control" name="cat_description"
+                                        required />
+                                    <label class="form-label" for="form3Example3c">Description</label>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-dark"
+                                    data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-dark">Apply</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end edit category -->
+
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    {% endblock %}

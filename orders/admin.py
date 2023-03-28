@@ -17,4 +17,4 @@ class OrderItemAdmin(admin.ModelAdmin):
 
 @admin.register(ReviewRating)
 class ReviewRatingAdmin(admin.ModelAdmin):
-    list_display = ('product','user', 'title', 'review', 'rating')
+    list_display = ('product','user', 'review', 'rating')

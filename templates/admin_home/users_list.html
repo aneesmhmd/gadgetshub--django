@@ -1,0 +1,118 @@
+{% extends 'base_admin.html' %}
+
+{% load static %}
+{% block title %}User management{% endblock %}
+
+{% block content %}
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>All Users</h1>
+  </div> <!-- End Page Title -->
+
+
+
+  <div class="col-12">
+    <div class="card recent-sales overflow-auto">
+
+
+      <div class="card-body">
+        <h5 class="card-title">Users List</h5>
+
+        {% include 'alerts.html' %}
+
+        <table class="table table-borderless datatable">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">First name</th>
+              <th scope="col">Last name</th>
+              <th scope="col">Username</th>
+              <th scope="col">Email</th>
+              <th scope="col">Phone number</th>
+              <th scope="col">Date joined</th>
+              <th scope="col">Action</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {% for u in users %}
+            <tr>
+              <th scope="row">{{u.id}}</th>
+              <td>{{u.first_name}}</td>
+              <td>{{u.last_name}}</td>
+              <td>{{u.username}}</td>
+              <td>{{u.email}}</td>
+              <td>{{u.phone_number}}</td>
+              <td>{{u.date_joined}}</td>
+
+                {% if u.is_active %}
+
+                  {% if u.is_superadmin %}
+                  <td>
+                  <button type="button" class="btn px-4"><i class="fa-solid fa-user-slash fa-lg text-secondary"></i></button>
+                  </td>
+                  {% else %}
+                  
+                  <td>
+                    <button type="button" class="btn px-4" data-bs-toggle="modal"
+                      data-bs-target="#block{{ forloop.counter }}"><i class="fa-solid fa-user-slash fa-lg text-danger"></i></button>
+                  </td>
+                  {% endif %}
+                {% else %}
+              <td>
+                <button type="button" class="btn px-4 ms-1" data-bs-toggle="modal"
+                data-bs-target="#block{{ forloop.counter }}"><i class="fa-solid fa-user-check fa-lg text-success"></i></button>
+              </td>
+                {% endif %}
+
+
+                <!--Modal: Block/Unblock -->
+                <div class="modal fade" id="block{{forloop.counter}}" tabindex="-1" role="dialog"
+                  aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+                    <!--Content-->
+                    <div class="modal-content text-center">
+                      <!--Header-->
+                      <div class="modal-header d-flex justify-content-center">
+                        <p class="heading text-dark">Do you want to Block/Unblock<br>
+                          <b>{{u.username}}</b>?
+                      </div>
+
+                      <!--Body-->
+                      <div class="modal-body">
+                        <i class="fas fa-times fa-4x animated rotateIn text-dark"></i>
+                      </div>
+
+                      <!--Footer-->
+                      <div class="modal-footer flex-center">
+                        <a href="{% url 'block_unblock' u.id %}  " class="btn  btn-outline-danger">Yes</a>
+                        <button type="button" class="btn btn-danger waves-effect text-light"
+                          data-bs-dismiss="modal">No</a>
+                      </div>
+                    </div>
+                    <!-- Content -->
+                  </div>
+                </div>
+
+                {% if u.is_active %}
+                <td class="text-center"><span class="badge bg-success">Active</span></td>
+              {% else %}
+              <td class="text-center"><span class="badge bg-danger">Inactive</span></td>
+              {% endif %}
+         
+                
+
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+  {% include 'alerts.html' %}
+
+</main>
+{% endblock %}

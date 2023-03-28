@@ -4,6 +4,19 @@
 {% block content %}
 
 <!-- Wish List -->
+
+{% if not wishlist_items %}
+<div class="container d-flex justify-content-center m-t-70">
+    <div class="w-75 p-5 text-center">
+
+        <h3 class="text-dark py-5 border border-secondary rounded fw-75">Your Wishlist List is empty
+            <br>
+            <a href="{% url 'all_products' %}" class="btn btn-primary mt-3 py-3">Continue Shopping</a>
+
+        </h3>
+    </div>
+</div>
+{% else %}
 <div class="bg0 p-t-75 p-b-50">
    
     <div class="container">
@@ -58,5 +71,5 @@
         </div>
     </div>
 </div>
-
+{% endif %}
 {% endblock %}

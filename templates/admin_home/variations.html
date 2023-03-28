@@ -1,0 +1,610 @@
+{% extends 'base_admin.html' %}
+
+{% load static %}
+{% block title %}Variation management{% endblock %}
+
+{% block content %}
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>All Variations</h1>
+  </div> <!-- End Page Title -->
+
+
+  <!-- Products List -->
+  <div class="col-12">
+    <!-- Add Product button -->
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addproduct">
+      <b>Add Variations</b></button>
+
+    <div class="card recent-sales overflow-auto">
+
+
+      <div class="card-body">
+        <h5 class="card-title">Variations List</h5>
+        {% include 'alerts.html' %}
+        <table class="table table-borderless datatable">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Product</th>
+              <th scope="col" style="width:250px">RAM</th>
+              <th scope="col">Storage</th>
+              <th scope="col">Price</th>
+              <th scope="col" style="width:110px">Edit</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {% for v in variations %}
+            <tr>
+              <th scope="row">{{v.id}}</th>
+
+              <th scope="row">
+                {{v.product}}
+              </th>
+
+              <td> {{v.ram.ram}} </td>
+
+              <td>{{ v.storage.storage }}</td>
+
+              <td>{{ v.price }}</td>
+
+              <td>
+                <!--  Edit button -->
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#edit{{ forloop.counter }}">
+                  <i class="fa-sharp fa-solid fa-pen-to-square fa-lg text-warning"></i>
+                </button>
+              </td>
+
+
+              <td>
+
+
+                <!-- Delete Button -->
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#delete-{{ forloop.counter }}">
+                  <i class="fa-sharp fa-solid fa-trash fa-lg text-danger"></i>
+                </button>
+              </td>
+
+              <!--==========================================-->
+              <!-- Edit Modal -->
+              <div class="modal fade" id="edit{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Variations</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+
+                    <div class="modal-body">
+                      <form required action="{% url 'edit_variation' v.id %}" class="mx-1 mx-md-4" method="POST">
+                        {% csrf_token %}
+
+                        <!-- Add Product name -->
+                        <div class="d-flex flex-row align-items-center mb-4">
+                          <div class="form-outline flex-fill mb-0">
+                            <select class="form-select" name="product" required>
+                              <option value="{{v.product}}" selected>{{v.product}}</option>
+                              {% for p in products %}
+                              <option value="{{p}}">{{p}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+
+                        <!-- Price -->
+                        <div class="d-flex flex-row align-items-center mb-4 col-md-12">
+                          <div class="form-outline flex-fill mb-0">
+                            <input type="number" id="form3Example1c" class="form-control" name="price"
+                              value="{{v.price}}" required />
+                          </div>
+                        </div>
+
+                        <div class="row mb-4">
+
+                          <!-- Ram-->
+                          <div class="col-md-6">
+                            <select class="form-select" name="ram" required>
+
+                              <option value="{{v.ram}}" selected>{{v.ram}}</option>
+                              {% for ram in rams %}
+                              <option value="{{ram}}">{{ram}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+
+                          <!-- Storage-->
+                          <div class="col-md-6">
+                            <select class="form-select" aria-label="Default select example" name="storage" required>
+                              <option value="{{v.storage}}" selected>{{v.storage}}</option>
+                              {% for storage in storages %}
+                              <option value="{{storage}}">{{storage}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-dark">Apply</button>
+                        </div>
+
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end edit category -->
+
+              <!--==========================================-->
+
+              <!-- Delete Modal -->
+
+              <div class="modal fade" id="delete-{{forloop.counter}}" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+
+                  <!--Content-->
+                  <div class="modal-content text-center">
+
+                    <!--Header-->
+                    <div class="modal-header d-flex justify-content-center">
+                      <p class="heading text-dark">Do you want to delete<br>
+                        <b>{{v}}</b> for <b>{{v.product}}</b>?
+                    </div>
+
+                    <!--Body-->
+                    <div class="modal-body">
+                      <i class="fas fa-times fa-4x animated rotateIn text-dark"></i>
+                    </div>
+
+                    <!--Footer-->
+                    <div class="modal-footer flex-center">
+                      <a href="{% url 'remove_variation' v.id %}" class="btn  btn-outline-danger">Yes</a>
+                      <button type="button" class="btn btn-danger waves-effect text-light"
+                        data-bs-dismiss="modal">No</a>
+                    </div>
+                  </div>
+                  <!-- Content -->
+
+                </div>
+              </div>
+
+              <!--==========================================-->
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+
+
+
+    <!--==========================================-->
+    <!-- Add Modal -->
+    <div class="modal fade" id="addproduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-dark text-light">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Variation</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+
+            <form required action="{% url 'add_variation' %}" class="mx-1 mx-md-4" method="POST">
+              {% csrf_token %}
+
+              <!-- Add Product name -->
+              <div class="d-flex flex-row align-items-center mb-4">
+                <div class="form-outline flex-fill mb-0">
+                  <select class="form-select" name="product" required>
+                    <option disabled selected>Product</option>
+                    {% for p in products %}
+                    <option value="{{p}}">{{p}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+              <!-- Price -->
+              <div class="d-flex flex-row align-items-center mb-4 col-md-12">
+                <div class="form-outline flex-fill mb-0">
+                  <input type="number" id="form3Example1c" class="form-control" name="price" placeholder="Price"
+                    required />
+                </div>
+              </div>
+
+              <div class="row mb-4">
+
+                <!-- Ram-->
+                <div class="col-md-6">
+                  <select class="form-select" name="ram" required>
+
+                    <option disabled selected>RAM</option>
+                    {% for ram in rams %}
+                    <option value="{{ram}}">{{ram}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <!-- Storage-->
+                <div class="col-md-6">
+                  <select class="form-select" aria-label="Default select example" name="storage" required>
+                    <option disabled selected>Storage</option>
+                    {% for storage in storages %}
+                    <option value="{{storage}}">{{storage}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-dark">Apply</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- End Recent Sales -->
+
+
+  <!--==================================================== RAM and Storage ===================================-->
+
+
+  <!-- ======================= RAM ===============================-->
+  <div class="pagetitle">
+    <h1>RAM and Storage</h1>
+  </div> <!-- End Page Title -->
+  <div class="row">
+    <div class="col-md-6">
+      <!-- Add Product button -->
+      <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addram">
+        <b>Add RAM</b></button>
+
+      <div class="card recent-sales overflow-auto">
+
+
+        <div class="card-body">
+          <h5 class="card-title">RAM</h5>
+          {% include 'alerts.html' %}
+          <table class="table table-borderless datatable">
+            <thead>
+              <tr>
+                <th scope="col">Id</th>
+                <th scope="col">RAM</th>
+                <th scope="col" style="width:110px">Edit</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {% for r in rams %}
+              <tr>
+                <th scope="row">{{r.id}}</th>
+
+                <th scope="row">
+                  {{r.ram}}
+                </th>
+
+                <td>
+                  <!--  Edit button -->
+                  <button type="button" class="btn" data-bs-toggle="modal"
+                    data-bs-target="#editram{{ forloop.counter }}">
+                    <i class="fa-sharp fa-solid fa-pen-to-square fa-lg text-warning"></i>
+                  </button>
+                </td>
+
+
+                <td>
+                  <!-- Delete Button -->
+                  <button type="button" class="btn" data-bs-toggle="modal"
+                    data-bs-target="#deleteram-{{ forloop.counter }}">
+                    <i class="fa-sharp fa-solid fa-trash fa-lg text-danger"></i>
+                  </button>
+                </td>
+
+                <!--==========================================-->
+                <!-- Edit RAM -->
+                <div class="modal fade" id="editram{{forloop.counter}}" tabindex="-1"
+                  aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel"><b>Edit RAM</b></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+
+
+                      <div class="modal-body">
+                        <form required action="{% url 'edit_ram' r.id %}" class="mx-1 mx-md-4" method="POST">
+                          {% csrf_token %}
+
+                          <!-- Edit Ram -->
+                          <div class="d-flex flex-row align-items-center mb-4">
+                            <div class="form-outline flex-fill mb-0">
+                              <input type="text" id="form3Example1c" class="form-control" name="ram" value="{{r.ram}}"
+                                required />
+                            </div>
+                          </div>
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-dark">Apply</button>
+                          </div>
+
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end edit category -->
+
+                <!--==========================================-->
+
+                <!-- Delete Modal -->
+
+                <div class="modal fade" id="deleteram-{{forloop.counter}}" tabindex="-1" role="dialog"
+                  aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+
+                    <!--Content-->
+                    <div class="modal-content text-center">
+
+                      <!--Header-->
+                      <div class="modal-header d-flex justify-content-center">
+                        <p class="heading text-dark">Do you want to delete<br>
+                          <b>{{r.ram}}</b>?
+                      </div>
+
+                      <!--Body-->
+                      <div class="modal-body">
+                        <i class="fas fa-times fa-4x animated rotateIn text-dark"></i>
+                      </div>
+
+                      <!--Footer-->
+                      <div class="modal-footer flex-center">
+                        <a href="{% url 'remove_ram' r.id %}" class="btn  btn-outline-danger">Yes</a>
+                        <button type="button" class="btn btn-danger waves-effect text-light"
+                          data-bs-dismiss="modal">No</a>
+                      </div>
+                    </div>
+                    <!-- Content -->
+
+                  </div>
+                </div>
+
+                <!--==========================================-->
+              </tr>
+              {% endfor %}
+
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+
+
+      <!--==========================================-->
+      <!-- Add RAM -->
+      <div class="modal fade" id="addram" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header bg-dark text-light">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Add RAM</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+              <form required action="{% url 'add_ram' %}" class="mx-1 mx-md-4" method="POST">
+                {% csrf_token %}
+
+                <!-- ADD Ram -->
+                <div class="d-flex flex-row align-items-center mb-4">
+                  <div class="form-outline flex-fill mb-0">
+                    <input type="text" id="form3Example1c" class="form-control" name="ram" placeholder="Enter RAM"
+                      required />
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-dark">Apply</button>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- End Ram  -->
+
+
+    <!-- =================== STORAGE ================================-->
+
+    
+
+    <div class="col-md-6">
+      <!-- Add Product button -->
+      <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addstorage">
+        <b>Add Storage</b></button>
+
+      <div class="card recent-sales overflow-auto">
+
+
+        <div class="card-body">
+          <h5 class="card-title">Storage</h5>
+          {% include 'alerts.html' %}
+          <table class="table table-borderless datatable">
+            <thead>
+              <tr>
+                <th scope="col">Id</th>
+                <th scope="col">RAM</th>
+                <th scope="col" style="width:110px">Edit</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {% for s in storages %}
+              <tr>
+                <th scope="">{{s.id}}</th>
+
+                <th scope="">
+                  {{s.storage}}
+                </th>
+
+                <td>
+                  <!--  Edit button -->
+                  <button type="button" class="btn" data-bs-toggle="modal"
+                    data-bs-target="#editstorage{{ forloop.counter }}">
+                    <i class="fa-sharp fa-solid fa-pen-to-square fa-lg text-warning"></i>
+                  </button>
+                </td>
+
+
+                <td>
+                  <!-- Delete Button -->
+                  <button type="button" class="btn" data-bs-toggle="modal"
+                    data-bs-target="#deletestorage-{{ forloop.counter }}">
+                    <i class="fa-sharp fa-solid fa-trash fa-lg text-danger"></i>
+                  </button>
+                </td>
+
+                <!--==========================================-->
+                <!-- Edit storage -->
+                <div class="modal fade" id="editstorage{{forloop.counter}}" tabindex="-1"
+                  aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel"><b>Edit RAM</b></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+
+
+                      <div class="modal-body">
+                        <form required action="{% url 'edit_storage' s.id %}" class="mx-1 mx-md-4" method="POST">
+                          {% csrf_token %}
+
+                          <!-- Edit storage -->
+                          <div class="d-flex flex-row align-items-center mb-4">
+                            <div class="form-outline flex-fill mb-0">
+                              <input type="text" id="form3Example1c" class="form-control" name="storage" value="{{s.storage}}"
+                                required />
+                            </div>
+                          </div>
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-dark">Apply</button>
+                          </div>
+
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end edit category -->
+
+                <!--==========================================-->
+
+                <!-- Delete Modal -->
+
+                <div class="modal fade" id="deletestorage-{{forloop.counter}}" tabindex="-1" role="dialog"
+                  aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+
+                    <!--Content-->
+                    <div class="modal-content text-center">
+
+                      <!--Header-->
+                      <div class="modal-header d-flex justify-content-center">
+                        <p class="heading text-dark">Do you want to delete<br>
+                          <b>{{s.storage}}</b>?
+                      </div>
+
+                      <!--Body-->
+                      <div class="modal-body">
+                        <i class="fas fa-times fa-4x animated rotateIn text-dark"></i>
+                      </div>
+
+                      <!--Footer-->
+                      <div class="modal-footer flex-center">
+                        <a href="{% url 'remove_storage' s.id %}" class="btn  btn-outline-danger">Yes</a>
+                        <button type="button" class="btn btn-danger waves-effect text-light"
+                          data-bs-dismiss="modal">No</a>
+                      </div>
+                    </div>
+                    <!-- Content -->
+
+                  </div>
+                </div>
+
+                <!--==========================================-->
+              </tr>
+              {% endfor %}
+
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+
+
+      <!--==========================================-->
+      <!-- Add storage -->
+      <div class="modal fade" id="addstorage" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header bg-dark text-light">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Add Storage</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+              <form required action="{% url 'add_storage' %}" class="mx-1 mx-md-4" method="POST">
+                {% csrf_token %}
+
+                <!-- ADD storage -->
+                <div class="d-flex flex-row align-items-center mb-4">
+                  <div class="form-outline flex-fill mb-0">
+                    <input type="text" id="form3Example1c" class="form-control" name="storage" placeholder="Enter Storage"
+                      required/>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-dark">Apply</button>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- End storage  -->
+  </div>
+
+
+</main>
+{% endblock %}

@@ -20,33 +20,31 @@ def success(request):
     razorpay_order_id = request.GET.get('razorpay_order_id')
     cart = Cart.objects.get(razorpay_order_id=razorpay_order_id)
 
-
     # Payment details storing
     user = request.user
     transaction_id = request.GET.get('razorpay_payment_id')
     cart_total = cart.get_cart_total()
     tax = cart.get_tax()
     grand_total = cart.get_grand_total()
-    payment = Payment.objects.create(
-        user=user, transaction_id=transaction_id, cart_total=cart_total, tax=tax, grand_total=grand_total)
+    payment = Payment.objects.create(user=user, transaction_id=transaction_id, cart_total=cart_total, tax=tax, grand_total=grand_total)
     payment.save()
-
 
     # Creating the order in Order table
     delivery_address = Address.objects.get(user=user, default=True)
     order = Order.objects.create(order_id=razorpay_order_id, user=user, delivery_address=delivery_address, payment=payment)
 
-
     # Storing ordered products in OrderItem table
     order_items = CartItem.objects.filter(cart=cart)
     for item in order_items:
         item.product.stock -= item.quantity
+        item.product.save()
+
         ordered_item = OrderItem.objects.create(user=user,order=order, product=item.product, item_price=item.get_product_price(), quantity=item.quantity, item_total=item.get_sub_total())
         ordered_item.save()
+        
         if item.variant:
             ordered_item.variant = item.variant.variation
             ordered_item.save()
-
 
     # Deleting the cart once it is ordered/paid
     cart.is_active = False
@@ -62,6 +60,7 @@ def orders_list(request):
     return render(request, 'orders/orders_list.html', {'orders' : orders})
 
 
+
 @login_required
 def order_details(request,order_id):
     try:
@@ -71,6 +70,7 @@ def order_details(request,order_id):
     except:
         pass 
     return render(request, 'orders/order_details.html', {'order_items' : order_items})
+
 
 
 @login_required
@@ -85,10 +85,11 @@ def order_tracking(request, item_id):
     return render(request, 'orders/order_tracking.html' ,context)
 
 
+
 @login_required
 def order_invoice(request, order_id):
+
     order = Order.objects.get(uid=order_id,user=request.user)
-    print(order)
     order_items = OrderItem.objects.filter(order=order)
 
     context = {
@@ -106,6 +107,7 @@ def submit_review(request, product_id):
             review = ReviewRating.objects.get(user__id=request.user.id, product__id=product_id)
             form = ReviewForm(request.POST, instance=review)  # Checks whether the review of the product by the user exists.
                                                               # If exists, it will detect that review needs to be updated.
+                                                              # Else save it as a new review
                                                               # If instance not passed, it will save it as a new review
             form.save()
             messages.success(request, 'Thank you! Your review has been updated')
@@ -139,18 +141,19 @@ def cancel_order(request, item_id=None, order_id=None):
         item = OrderItem.objects.get(order=order, id=item_id)
         item_amount = int(item.item_total) * 100
         
-        
         refund = client.payment.refund(payment_id,{'amount':item_amount})
 
         if refund is not None:
             item.order_status = 'Refunded'
+            item.product.stock += item.quantity
+
             item.save()
-            return HttpResponse('Payment captured')
+            return render(request, 'orders/refund_success.html',{'order_id':order_id})
 
         else:
             return HttpResponse('Payment not captured')
     
-        return HttpResponse('Payment success')
+       
 
 
 

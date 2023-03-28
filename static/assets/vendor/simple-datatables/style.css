@@ -146,7 +146,7 @@
 	opacity: 0.2;
 }
 
-.dataTable-sorter::before {
+/* .dataTable-sorter::before {
 	border-top: 4px solid #000;
 	bottom: 0px;
 }
@@ -155,7 +155,7 @@
 	border-bottom: 4px solid #000;
 	border-top: 4px solid transparent;
 	top: 0px;
-}
+} */
 
 .asc .dataTable-sorter::after,
 .desc .dataTable-sorter::before {

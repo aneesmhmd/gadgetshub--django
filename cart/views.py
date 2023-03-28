@@ -16,7 +16,8 @@ def cart(request):
     cart_items=None
     try:
         cart, _ = Cart.objects.get_or_create(user=request.user, is_active=True)
-        cart_items = CartItem.objects.filter(cart=cart)
+        cart_items = CartItem.objects.filter(cart=cart).order_by('id')
+        coupons = Coupon.objects.all()
     except Exception as e:
         print(e)
 
@@ -46,7 +47,10 @@ def cart(request):
         messages.success(request, 'Coupon Applied')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-    context = {'cart_items': cart_items, 'cart': cart}
+    context = {'cart_items': cart_items,
+               'cart': cart,
+               'coupons' : coupons
+               }
     return render(request, 'store/cart.html', context)
 
 
@@ -57,20 +61,24 @@ def add_cart(request, product_id):
     product_variant = None
     try:
         variation = request.GET.get('variant')
+        print(variation)
         product = Product.objects.get(id=product_id)
         user = request.user
 
         if variation:
-            product_variant = Variation.objects.get(
-                product=product, variation=variation)
+            product_variant = Variation.objects.get(product=product, variation=variation)
 
         cart, _ = Cart.objects.get_or_create(user=user, is_active=True)
-        is_cart_item = CartItem.objects.filter(
-            cart=cart, product=product, variant=product_variant).exists()
+        is_cart_item = CartItem.objects.filter(cart=cart, product=product, variant=product_variant).exists()
 
         if is_cart_item:
-            cart_item = CartItem.objects.get(
-                cart=cart, product=product, variant=product_variant)
+
+            cart_item = CartItem.objects.get(cart=cart, product=product, variant=product_variant)
+            
+            if cart_item.quantity == product.stock:
+                messages.error(request, f'Only {cart_item.quantity} product in stock')
+                return redirect('cart')
+            
             cart_item.quantity += 1
             cart_item.save()
 
