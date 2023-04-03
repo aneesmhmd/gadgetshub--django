@@ -46,7 +46,7 @@ class UserAddressForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields["full_name"].widget.attrs.update(
-            {"class": "form-control mb-2 account-form", "pattern":"[a-z]" ,"placeholder":"Full Name"}
+            {"class": "form-control mb-2 account-form" ,"placeholder":"Full Name"}
         )
 
         self.fields["house_name"].widget.attrs.update(
