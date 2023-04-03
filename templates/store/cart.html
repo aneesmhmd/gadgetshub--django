@@ -8,16 +8,23 @@
 
 
 {% if not cart_items %}
-<div class="container d-flex justify-content-center m-t-70">
-    <div class="w-75 p-5 text-center">
 
-        <h3 class="text-dark py-5 border border-secondary rounded fw-75">Your Cart is empty
-            <br>
-            <a href="{% url 'all_products' %}" class="btn btn-primary mt-3 py-3">Continue Shopping</a>
+<div class="container m-t-70 d-flex justify-content-center">
+    <div class="w-75 p-5">
 
-        </h3>
+        <br>
+        <div class="w-100 d-flex justify-content-center">
+            <img src="{% static 'user_home/images/others/cart.png' %}" alt="#" width="400px">
+        </div>
+        <br>
+        <div class="w-100 d-flex justify-content-center">
+            <a href="{% url 'all_products' %}" class="btn btn-outline-dark w-25 flex-c-m size-115  bor14">Continue
+                Shopping</a>
+        </div>
+
     </div>
 </div>
+
 {% else %}
 <!-- Cart -->
 <div class="bg0 p-t-75 p-b-85">
@@ -58,7 +65,7 @@
 
 
                         <table class="table-shopping-cart">
-                        {% include 'alerts.html' %}
+                            {% include 'alerts.html' %}
 
                             <tr class="table_head">
                                 <th class="column-1">Product</th>
@@ -180,25 +187,26 @@
                         <!--Modal: coupons list -->
                         <div class="modal fade right" id="modalDiscount" tabindex="-1" role="dialog"
                             aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="true">
-                            <div class="modal-dialog modal-side modal-bottom-right modal-notify modal-danger"
-                                role="document">
+                            <div class="modal-dialog modal-danger" role="document">
                                 <!--Content-->
                                 <div class="modal-content">
 
                                     <!--Body-->
-                                    <div class="modal-body">                                     
+                                    <div class="modal-body" style="max-height: 220px; overflow-y: scroll;">
 
                                         <div class="row">
                                             <div class="col-3">
                                                 <p class="text-center">
-                                                    
+
                                                     <i class="fas fa-gift fa-4x text-danger"></i>
                                                 </p>
                                             </div>
 
                                             <div class="col-9">
                                                 {% for coupon in coupons %}
-                                                <p class="text-dark"> <b class="text-danger">{{coupon.coupon_code}}</b> : ₹{{coupon.discount_price}} OFF on orders above ₹{{coupon.min_amount}} </p>
+                                                <p class="text-dark"> <b class="text-danger">{{coupon.coupon_code}}</b>
+                                                    : ₹{{coupon.discount_price}} OFF on orders above
+                                                    ₹{{coupon.min_amount}} </p>
                                                 <hr>
                                                 {% endfor %}
                                             </div>
@@ -213,7 +221,7 @@
 
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                         <!-- End coupon list-->
@@ -266,6 +274,23 @@
                                 Rs.{{ cart.get_tax }}/-
                             </span>
                         </div>
+
+                        {% if cart.coupon %}
+                        
+                        <div class="size-208 mt-3">
+                            <span class="stext-110 cl2">
+                                Discount:
+                            </span>
+                        </div>
+
+                        <div class="size-209 mt-3">
+                            <span class="mtext-110 cl2">
+                                Rs.{{ cart.coupon.discount_price }}/-
+                            </span>
+                        </div>
+
+                        {% endif %}
+
                     </div>
 
 
@@ -298,16 +323,5 @@
     </div>
 </div>
 
-{% comment %}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-    crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
-    integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
-    crossorigin="anonymous"></script> {% endcomment %}
 
 {% endblock content %}

@@ -2,10 +2,8 @@ from django.db import models
 from base.models import BaseModel
 from accounts.models import Account, Address
 from store.models import Product, Variation
+from cart.models import Coupon
 
-
-def generate_tracking_id(request):
-    cla = 1234
 
 # Create your models here.
 class Payment(models.Model):
@@ -25,6 +23,7 @@ class Payment(models.Model):
 class Order(BaseModel):
     order_id = models.CharField(max_length=100, unique=True)
     user = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
+    coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, null=True, blank=True)
     delivery_address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, null=True, blank=True)
     ordered_date = models.DateField(auto_now_add=True, editable=False)
@@ -64,5 +63,5 @@ class ReviewRating(models.Model):
     created_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.title
+        return self.review
 

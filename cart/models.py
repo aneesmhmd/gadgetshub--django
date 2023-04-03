@@ -36,10 +36,6 @@ class Cart(models.Model):
             price.append(cart_item.product.price * quantity)
             if cart_item.variant:
                 price.append(cart_item.variant.price * quantity)
-
-        if self.coupon:
-            if self.coupon.min_amount < sum(price):
-                return sum(price) - self.coupon.discount_price
             
         return sum(price)
 
@@ -49,6 +45,12 @@ class Cart(models.Model):
 
     # tax + cart_total
     def get_grand_total(self):
+        total = self.get_cart_total() + self.get_tax()
+
+        if self.coupon:
+            if self.coupon.min_amount < total:
+                return total - self.coupon.discount_price
+    
         return self.get_cart_total() + self.get_tax()
 
 # ----------------------------------------------

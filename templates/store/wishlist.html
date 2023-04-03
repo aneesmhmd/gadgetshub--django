@@ -1,38 +1,45 @@
-{% extends 'base_user.html' %} 
-{% load static %} 
-{% block title %}Wishlist{% endblock %} 
+{% extends 'base_user.html' %}
+{% load static %}
+{% block title %}Wishlist{% endblock %}
 {% block content %}
 
 <!-- Wish List -->
 
 {% if not wishlist_items %}
-<div class="container d-flex justify-content-center m-t-70">
-    <div class="w-75 p-5 text-center">
 
-        <h3 class="text-dark py-5 border border-secondary rounded fw-75">Your Wishlist List is empty
-            <br>
-            <a href="{% url 'all_products' %}" class="btn btn-primary mt-3 py-3">Continue Shopping</a>
+<div class="container m-t-70 d-flex justify-content-center">
+    <div class="w-75 p-5">
 
-        </h3>
+        <br>
+        <div class="w-100 d-flex justify-content-center">
+            <img src="{% static 'user_home/images/others/wishlist.png' %}" alt="#" width="470px">
+        </div>
+        <br>
+        <div class="w-100 d-flex justify-content-center">
+            <a href="{% url 'all_products' %}" class="btn btn-outline-dark w-25 flex-c-m size-115 bor14">Continue
+                Shopping</a>
+        </div>
+
     </div>
 </div>
+
 {% else %}
 <div class="bg0 p-t-75 p-b-50">
-   
-    <div class="container">
-        
-         <!-- breadcrumb -->
-    <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-        <a href="{% url 'home' %}" class="stext-109 cl8 hov-cl1 trans-04">
-            Home
-            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-        </a>
 
-        <span class="stext-109 cl4">
-            Wishlist
-        </span>
-    </div>
-    <!-- end breadcrumb -->
+    <div class="container">
+
+        <!-- breadcrumb -->
+        <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+            <a href="{% url 'home' %}" class="stext-109 cl8 hov-cl1 trans-04">
+                Home
+                <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+            </a>
+
+            <span class="stext-109 cl4">
+                Wishlist
+            </span>
+        </div>
+        <!-- end breadcrumb -->
 
         <div class="row m-t-20">
             <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
@@ -51,21 +58,24 @@
                                 <td class="column-1">
                                     <a href="{{wishlist_item.product.get_url }}" class="text-dark">
                                         <div class="how-itemcart1">
-                                            <img src="/media/{{  wishlist_item.product.product_images.first.image }}" alt="IMG">
+                                            <img src="/media/{{  wishlist_item.product.product_images.first.image }}"
+                                                alt="IMG">
                                         </div>
                                     </a>
                                 </td>
-                                <td class="column text-center"> <a href="{{wishlist_item.product.get_url }}" class="text-dark">{{wishlist_item.product.product_name}}</a></td>
+                                <td class="column text-center"> <a href="{{wishlist_item.product.get_url }}"
+                                        class="text-dark">{{wishlist_item.product.product_name}}</a></td>
                                 <td class="column text-center">Rs.{{ wishlist_item.product.price }}/-</td>
                                 <td class="column text-center">
-                                    <a href="{% url 'remove_wishlist' wishlist_item.product.id %}" type="button" class="btn btn-danger btn-floating"><i class="fa-solid fa-trash"></i></a>
+                                    <a href="{% url 'remove_wishlist' wishlist_item.product.id %}" type="button"
+                                        class="btn btn-danger btn-floating"><i class="fa-solid fa-trash"></i></a>
                                 </td>
                             </tr>
                             {% endfor %}
                         </table>
                     </div>
 
-                    
+
                 </div>
             </div>
         </div>

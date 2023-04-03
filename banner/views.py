@@ -8,7 +8,7 @@ from admin_products.views import superadmin_check
 
 @user_passes_test(superadmin_check)
 def banner_managemet(request):
-    banners = Banner.objects.all().order_by('id')
+    banners = Banner.objects.all().order_by('-id')
     return render(request, 'admin_home/banner.html', {'banners' : banners})
 
 

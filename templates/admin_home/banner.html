@@ -40,7 +40,7 @@
 
                         {% for b in banners %}
                         <tr>
-                            <th scope="row">{{b.id}}</th>
+                            <th scope="row">{{forloop.counter}}</th>
                             <th scope="row">
                                 <img src="/media/{{b.image}}" style="width:200px;" alt=..>
                             </th>

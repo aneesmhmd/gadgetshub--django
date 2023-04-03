@@ -1,11 +1,11 @@
 from django import forms
-from django.core.validators import RegexValidator
 from . models import Account,Address
 
 class RegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={
         'placeholder' : 'Enter Password',
     }))
+    
     confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={
         'placeholder' : 'Confirm Password',
     }))
@@ -46,35 +46,34 @@ class UserAddressForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields["full_name"].widget.attrs.update(
-            {"class": "form-control mb-2 account-form","placeholder":"Full Name"}
+            {"class": "form-control mb-2 account-form", "pattern":"[a-z]" ,"placeholder":"Full Name"}
         )
-        
 
         self.fields["house_name"].widget.attrs.update(
-            {"class": "form-control mb-2 account-form","placeholder":"House Name"}
+            {"class": "form-control mb-2 account-form", "placeholder":"House Name"}
         )
 
         self.fields["phone_number"].widget.attrs.update(
-            {"class": "form-control mb-2 account-form","pattern":"[0-9]{10}","placeholder":"Phone Number"}
+            {"class": "form-control mb-2 account-form", "pattern":"[0-9]{10}", "placeholder":"Phone Number"}
         )
        
         self.fields["city"].widget.attrs.update(
-            {"class": "form-control mb-2 account-form","placeholder":"City"}
+            {"class": "form-control mb-2 account-form", "placeholder":"City"}
         )
 
         self.fields["district"].widget.attrs.update(
-            {"class": "form-control mb-2 account-form","placeholder":"District"}
+            {"class": "form-control mb-2 account-form", "placeholder":"District"}
         )
         
         self.fields["state"].widget.attrs.update(
-            {"class": "form-control mb-2 account-form","placeholder":" State"}
+            {"class": "form-control mb-2 account-form", "placeholder":" State"}
         )
 
         self.fields["country"].widget.attrs.update(
-            {"class": "form-control mb-2 account-form","placeholder":"Country"}
+            {"class": "form-control mb-2 account-form", "placeholder":"Country"}
         )
 
         self.fields["pin"].widget.attrs.update(
-            {"class": "form-control mb-2 account-form","placeholder":"PIN code"}
+            {"class": "form-control mb-2 account-form", "pattern":"[0-9]{6}", "placeholder":"PIN code"}
         )
         

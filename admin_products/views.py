@@ -13,7 +13,7 @@ def superadmin_check(user):
 
 @user_passes_test(superadmin_check)
 def products_list(request):
-    products = Product.objects.all().order_by('id')
+    products = Product.objects.all().order_by('-id')
     categories = Category.objects.all()
     brands = Brand.objects.all()
 
@@ -128,14 +128,13 @@ def remove_product(request, id):
 
 # ---------------- Variations -----------------
 
-
 @user_passes_test(superadmin_check)
 def variations(request):
     context = {
-        'variations': Variation.objects.all().order_by('id'),
+        'variations': Variation.objects.all().order_by('-id'),
         'products': Product.objects.all().order_by('id'),
-        'rams': Ram.objects.all().order_by('id'),
-        'storages': Storage.objects.all().order_by('id')
+        'rams': Ram.objects.all().order_by('-id'),
+        'storages': Storage.objects.all().order_by('-id')
     }
     return render(request, 'admin_home/variations.html', context)
 
@@ -273,8 +272,9 @@ def remove_ram(request,id):
     
 # -----------------------------------------
 
-# --------------- STORAGE ------------------
 
+
+# --------------- STORAGE ------------------
 
 @user_passes_test(superadmin_check)
 def add_storage(request):

@@ -40,7 +40,7 @@
 
                         {% for c in categories %}
                         <tr>
-                            <th scope="row">{{c.id}}</th>
+                            <th scope="row">{{forloop.counter}}</th>
                             <th scope="row">
                                 <img src="/media/{{c.category_image}}" style="width:100px;" alt=..>
                             </th>

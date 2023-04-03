@@ -42,7 +42,7 @@
 
             {% for p in products %}
             <tr>
-              <th scope="row">{{p.id}}</th>
+              <th scope="row">{{forloop.counter}}</th>
 
               <th scope="row">
                 <img src="/media/{{p.product_images.first.image}}" style="width:70px;" alt=..>

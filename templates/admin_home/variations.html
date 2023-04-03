@@ -39,7 +39,7 @@
 
             {% for v in variations %}
             <tr>
-              <th scope="row">{{v.id}}</th>
+              <th scope="row">{{forloop.counter}}</th>
 
               <th scope="row">
                 {{v.product}}
@@ -279,7 +279,7 @@
 
         <div class="card-body">
           <h5 class="card-title">RAM</h5>
-          {% include 'alerts.html' %}
+
           <table class="table table-borderless datatable">
             <thead>
               <tr>
@@ -293,7 +293,7 @@
 
               {% for r in rams %}
               <tr>
-                <th scope="row">{{r.id}}</th>
+                <th scope="row">{{forloop.counter}}</th>
 
                 <th scope="row">
                   {{r.ram}}
@@ -440,7 +440,7 @@
     
 
     <div class="col-md-6">
-      <!-- Add Product button -->
+      <!-- Add storage button -->
       <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addstorage">
         <b>Add Storage</b></button>
 
@@ -449,7 +449,7 @@
 
         <div class="card-body">
           <h5 class="card-title">Storage</h5>
-          {% include 'alerts.html' %}
+
           <table class="table table-borderless datatable">
             <thead>
               <tr>
@@ -463,7 +463,7 @@
 
               {% for s in storages %}
               <tr>
-                <th scope="">{{s.id}}</th>
+                <th scope="">{{forloop.counter}}</th>
 
                 <th scope="">
                   {{s.storage}}

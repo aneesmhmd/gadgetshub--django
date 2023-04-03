@@ -41,7 +41,7 @@
 
                         {% for c in coupons %}
                         <tr>
-                            <th scope="row">{{c.id}}</th>
+                            <th scope="row">{{forloop.counter}}</th>
                             <td>{{c.coupon_code}}</td>
                             <td>₹{{c.discount_price}}</td>
                             <td>₹{{c.min_amount}}</td>
@@ -220,7 +220,7 @@
                                 <div class="d-flex flex-row align-items-center mb-3 col-md-6">
                                   <div class="form-outline flex-fill mb-0">
                                     <input type="number" id="form3Example1c" class="form-control" name="dis_price" value="{{c.discount_price}}" required/>
-                                    <label class="form-label" for="form3Example1c">Dissount Price</label>
+                                    <label class="form-label" for="form3Example1c">Discount Price</label>
                                   </div>
                                 </div>
       

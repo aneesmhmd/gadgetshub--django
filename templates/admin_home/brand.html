@@ -38,7 +38,7 @@
 
                         {% for b in brands %}
                         <tr>
-                            <th scope="row">{{b.id}}</th>
+                            <th scope="row">{{forloop.counter}}</th>
                             <td>{{b.brand_name}}</td>
                             <td>{{b.slug}}</td>
                             <td>

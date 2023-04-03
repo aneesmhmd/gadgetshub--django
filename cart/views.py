@@ -17,14 +17,15 @@ def cart(request):
     try:
         cart, _ = Cart.objects.get_or_create(user=request.user, is_active=True)
         cart_items = CartItem.objects.filter(cart=cart).order_by('id')
-        coupons = Coupon.objects.all()
+        coupons = Coupon.objects.filter(is_expired=False)
+        print(coupons)
     except Exception as e:
         print(e)
 
     if request.method == 'POST':
         coupon = request.POST.get('coupon')
         coupon_obj = Coupon.objects.filter(coupon_code__icontains=coupon)
-        print(coupon_obj)
+
         if not coupon_obj.exists():
             messages.error(request, 'Invalid Coupon')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -148,11 +149,20 @@ def checkout(request):
     try:
         cart = Cart.objects.get(user=current_user, is_active=True)
         cart_items = CartItem.objects.filter(cart=cart)
+
+        # Checks whether the item has selected quantity now
+        for item in cart_items:
+            if item.quantity > item.product.stock:
+                item.quantity = item.product.stock
+                item.save()
+                messages.warning(request, f'{item} has only {item.product.stock} quantity left')
+                return redirect('cart')
+        
         client = razorpay.Client(auth = (settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
         payment = client.order.create({'amount' : int(cart.get_grand_total()) * 100, 'currency' : 'INR', 'payment_capture': 1})
     except:
-        pass #Just Ignore 
-        
+        return redirect('cart')
+         
     cart.razorpay_order_id=payment['id']
     cart.save()
     context = {'cart': cart,

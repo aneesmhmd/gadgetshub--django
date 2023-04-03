@@ -5,7 +5,7 @@
 {% block content %}
 <!-- Product -->
 
-<div class="bg0 m-t-23 p-b-140">
+<div class="bg0 m-t-23 m-b-50">
     <div class="col">
         <nav aria-label="breadcrumb" class="rounded-3 p-3 m-4">
 
@@ -15,6 +15,7 @@
         <div class="row">
 
         </div>
+
         <div class="flex-w flex-sb-m p-b-10  mt-4">
             <div class="flex-w flex-l-m filter-tope-group m-tb-10">
 
@@ -149,9 +150,34 @@
         </div>
 
 
+
+
+        {% if not products %}
+
+        <div class="container d-flex justify-content-center">
+            <div class="w-75">
+        
+                <div class="w-100 d-flex justify-content-center">
+                    <img src="{% static 'user_home/images/others/search_not_found.jpg' %}" alt="#" width="500px">
+                </div>
+        
+        
+                <div class="w-100 d-flex flex-row flex-wrap justify-content-center">
+                    <h5> Oops! It looks like you have searched for a wrong product! </h5>
+                </div>
+        
+                <br>
+        
+                <div class="w-100 d-flex flex-row flex-wrap justify-content-center">
+                    <a href="{% url 'all_products' %}" class="btn btn-outline-dark w-25 flex-c-m size-115  bor14">Go to Store</a>
+                </div>
+        
+            </div>
+        </div>
+
+        {% else %}
         <!--Products card-->
         <div class="row isotope-grid">
-            {% if products %}
             {% for product in products %}
             <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
                 
@@ -208,10 +234,6 @@
             <hr class="bg-dark">
             {% endfor %}
 
-            {% else %}
-            <div class="text-center">
-                <h3 class="text-dark fw-75 m-l-15">No results found.Please try again.</h3>
-            </div>
             {% endif %}
 
         </div>

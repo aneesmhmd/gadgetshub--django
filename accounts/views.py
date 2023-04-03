@@ -15,8 +15,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 
 # Create your views here.
-
-
+    
 def login(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -175,7 +174,7 @@ def reset_password(request):
 
 @login_required(login_url='login')
 def dashboard(request):
-    address = Address.objects.filter(user=request.user)
+    address = Address.objects.filter(user=request.user).order_by('-id')
     context = {'user_addresses': address}
     return render(request, 'user/dashboard.html', context)
 
@@ -220,6 +219,7 @@ def change_password(request, user_id):
     return render(request, 'user/change_password.html')
 
 
+@login_required
 def change_dp(request):
     user_id = request.user.id
     user = Account.objects.get(id=user_id)
@@ -236,32 +236,44 @@ def change_dp(request):
 # -------------------------- Addresses --------------------------
 
 @login_required
-def add_address(request):
+def add_address(request,num=0):
     if request.method == "POST":
         address_form = UserAddressForm(data=request.POST)
+
         if address_form.is_valid():
             address_form = address_form.save(commit=False)
             address_form.user = request.user
+
             Address.objects.filter(user=request.user).update(default=False)
             address_form.default = True
             address_form.save()
-            return HttpResponseRedirect(reverse("dashboard"))
+
+            number = int(request.GET.get('num'))
+            
+            if number == 1:
+                return HttpResponseRedirect(reverse("dashboard"))
+            elif number == 2:
+                return HttpResponseRedirect(reverse("checkout"))
+
     else:
         address_form = UserAddressForm()
-        return render(request, "user/address.html", {"form": address_form})
+        return render(request, "user/address.html", {"form": address_form, "num" : num})
 
 
 @login_required
-def edit_address(request, id, num):
+def edit_address(request, id, num=0):
     if request.method == "POST":
         address = Address.objects.get(id=id, user=request.user)
         address_form = UserAddressForm(instance=address, data=request.POST)
         if address_form.is_valid():
             address_form.save()
-            if num == 1:
+            
+            number = int(request.GET.get('num'))
+            
+            if number == 1:
                 return HttpResponseRedirect(reverse("dashboard"))
-            elif num == 2:
-                return HttpResponseRedirect(reverse('checkout'))
+            elif number == 2:
+                return HttpResponseRedirect(reverse("checkout"))
     else:
         address = Address.objects.get(id=id, user=request.user)
         address_form = UserAddressForm(instance=address)
@@ -271,8 +283,8 @@ def edit_address(request, id, num):
 @login_required
 def delete_address(request, id, num):
     address = Address.objects.get(id=id, user=request.user)
-    print(address)
     address.delete()
+
     if num == 1:
         return redirect('dashboard')
     elif num == 2:

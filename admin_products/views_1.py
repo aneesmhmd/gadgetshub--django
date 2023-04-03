@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import user_passes_test
 
 @user_passes_test(superadmin_check)
 def coupons(request):
-    context = {'coupons' : Coupon.objects.all().order_by('id')}
+    context = {'coupons' : Coupon.objects.all().order_by('-id')}
     return render(request, 'admin_home/coupons.html', context)
 
 

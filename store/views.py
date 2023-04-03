@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from . models import Product, Variation
 from category.models import *
-from django.db.models import Q
+from django.db.models import Q, Avg
 from django.core.paginator import Paginator
 from wishlist.models import WishlistItem, Wishlist
 from orders.models import ReviewRating
@@ -15,6 +15,7 @@ from orders.models import OrderItem
 # All/Brandwise/Categorywise products
 def all_products(request, category_slug=None, brand_slug=None):
 
+    page_obj = None
     try:
         if category_slug != None:
             categories = Category.objects.get(slug=category_slug)
@@ -47,26 +48,38 @@ def all_products(request, category_slug=None, brand_slug=None):
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
-        context = {'products': page_obj}
-        return render(request, 'store/all_products.html', context)
-
     except Exception as e:
         pass  # custom 404 page
+    
+    context = {'products': page_obj}
+    return render(request, 'store/all_products.html', context)
 
 
 
 # Single product view
 def product_detail(request, category_slug, product_slug):
     in_wishlist = False
+    single_product = None
+    count = 0
 
     try:
         single_product = Product.objects.get(category__slug=category_slug, slug=product_slug)
         variants = Variation.objects.filter(product=single_product)
         reviews = ReviewRating.objects.filter(product=single_product)
-        ordered = OrderItem.objects.filter(product=single_product, user=request.user)
-        print(ordered)
-        context = {'single_product': single_product, 'variants': variants, 'reviews':reviews}
+        count = reviews.count()
+        ordered = OrderItem.objects.filter(product=single_product, user=request.user).exists()
+        
+        context = {'single_product': single_product,
+                   'variants': variants,
+                   'reviews':reviews, 
+                   'ordered' : ordered,
+                   'count' : count,
+                   }
 
+        if reviews:
+            avg_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+            context['avg_rating'] = avg_rating
+        
         if request.GET.get('variant'):
             variant = request.GET.get('variant')
             ram, storage = variant.split(",")
@@ -77,7 +90,6 @@ def product_detail(request, category_slug, product_slug):
                 'variant_price': variant_price,
                 'ram': ram,
                 'storage': storage,
-                'ordered' : ordered
             })
 
         if request.user.is_authenticated:
@@ -90,8 +102,8 @@ def product_detail(request, category_slug, product_slug):
 
         return render(request, 'store/product_detail.html', context)
 
-    except Exception as e:
-        raise e
+    except:
+        return render(request, 'store/product_detail.html', {'single_product' : single_product})
 
 
 

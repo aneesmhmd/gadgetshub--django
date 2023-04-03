@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+@login_required
 def wishlist(request,wishlist_items=None):
     
     try:
@@ -31,6 +32,7 @@ def add_wishlist(request,product_id):
     return redirect('wishlist')
 
 
+@login_required
 def remove_wishlist(request,product_id):
     product = Product.objects.get(id=product_id)
     user = request.user
