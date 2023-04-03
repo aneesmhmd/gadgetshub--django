@@ -39,7 +39,7 @@
             {% for item in order_items %}
             <tr>
               <td style="width:100px;">{{item.order.order_id}}</td>
-              <td class="text-center"><img src="/media/{{item.product.product_images.first.image}}" style="width:70px;" alt=..></td>
+              <td class="text-center"><img src="{{item.product.product_images.first.image.url}}" style="width:70px;" alt=..></td>
               <td>{{item.product}}</td>
               <td>₹{{item.item_price}}</td>
               <td class="text-center">{{item.quantity}}</td>

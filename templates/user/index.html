@@ -94,7 +94,7 @@
 						<div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
 							<div class="col">
 								<a href="{{ product.get_url }}">
-									<div class="card h-100 shadow-sm hov-img0"> <img src="/media/{{ product.product_images.first.image }}"
+									<div class="card h-100 shadow-sm hov-img0"> <img src="{{ product.product_images.first.image.url }}"
 											class="card-img-top" alt="...">	
 										<div class="card-body">
 											<hr>

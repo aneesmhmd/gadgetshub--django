@@ -32,7 +32,6 @@
               <th scope="col">Sub total</th>
               <th scope="col">Tax</th>
               <th scope="col">Grand Total</th>
-              {% comment %} <th scope="col">Coupon</th> {% endcomment %}
               <th scope="col">View</th>
             </tr>
           </thead>
@@ -53,22 +52,11 @@
               <td>₹{{o.payment.cart_total}}</td>
               <td>₹{{o.payment.tax}}</td>
               <td class="text-center">₹{{o.payment.grand_total}}</td>
-              
-
-
-                  
-                  
-                  
+   
 
               <td>
                 <a href="{% url 'order_items' o.id %}" type="button" class="btn"><i class="fa-solid fa-eye fa-lg text-warning"></i></a>
               </td>
-
-
-                
-
-         
-                
 
             </tr>
             {% endfor %}

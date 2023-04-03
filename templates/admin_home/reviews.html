@@ -40,7 +40,7 @@
                         <tr>
                             <th scope="row">{{forloop.counter}}</th>
                             <th scope="row">
-                                <img src="/media/{{r.product.product_images.first.image}}" style="width:70px;" alt=..>
+                                <img src="{{r.product.product_images.first.image.url}}" style="width:70px;" alt=..>
                             </th>
                             <td>{{r.product}}</td>
                             <td>{{r.user.id}}</td>
@@ -94,12 +94,6 @@
             </div>
 
         </div>
-
-        
-
-
-        
-
 
 
     </div>

@@ -212,7 +212,7 @@
 
                                 <div class="media">
 
-                                    <img class="mr-4" src="/media/{{ item.product.product_images.first.image}}"
+                                    <img class="mr-4" src="{{ item.product.product_images.first.image.url }}"
                                         alt="Generic placeholder image">
 
                                     <div class="media-body">
@@ -343,7 +343,7 @@
                         
                                                     <div class="m-l-50">
                                                         <img class="align-self-center img-fluid"
-                                                            src="/media/{{item.product.product_images.first.image}}" width="150">
+                                                            src="{{item.product.product_images.first.image.url}}" width="150">
                                                     </div>
                         
                                                 </div>

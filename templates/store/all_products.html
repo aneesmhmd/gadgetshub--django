@@ -186,7 +186,7 @@
                         <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
                             <div class="col">
                                 <a href="{{ product.get_url }}">
-                                    <div class="card h-100 shadow-sm hov-img0"> <img src="/media/{{ product.product_images.first.image }}"
+                                    <div class="card h-100 shadow-sm hov-img0"> <img src="{{ product.product_images.first.image.url }}"
                                             class="card-img-top" alt="...">
                                         <div class="card-body">
                                             <hr>
@@ -198,18 +198,7 @@
                                                     </a>
                                                 </div>
 
-                                                {% comment %} <div class="block2-txt-child2 flex-r p-t-3">
-                                                    <a href="{% url 'add_wishlist' product.id %}"
-                                                        class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">   <!--addedwish to add in wish-->
-                                                        <img class="icon-heart1 dis-block trans-04"
-                                                            src="{% static 'user_home/images/icons/icon-heart-01.png' %}"
-                                                            alt="ICON">
-                                                        <img class="icon-heart2 dis-block trans-04 ab-t-l"
-                                                            src="{% static 'user_home/images/icons/icon-heart-02.png' %}"
-                                                            alt="ICON">
-                                                    </a>
-                                                </div> {% endcomment %}
-
+                                    
                                             </div>
 
                                             <div class="clearfix mb-3">

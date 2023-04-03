@@ -26,10 +26,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG')
+DEBUG =False
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*','127.0.0.1']
 
 
 # Application definition
@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'admin_products',
     'admin_categories',
     'admin_orders',
+
+    'storages',
 ]
   
 
@@ -175,3 +177,20 @@ EMAIL_USE_TLS = os.getenv('TLS')
 # Razorpay configuration
 RAZOR_KEY_ID = os.getenv('KEY_ID')
 RAZOR_KEY_SECRET = os.getenv('KEY_SECRET')
+
+
+# AWS credentials
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY') 
+
+
+# AWS S3 configurations
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_FILE_OVERWRITE = False
+
+ADMIN_MEDIA_PREFIX = '/static/admin/'

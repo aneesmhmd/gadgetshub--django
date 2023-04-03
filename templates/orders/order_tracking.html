@@ -35,7 +35,6 @@
                                     </i>
                                     x {{item.quantity}}
                                 </h6>
-                                {% comment %} <p class="text-dark mt-2">Qty: {{item.quantity}} </p> {% endcomment %}
                                 <h6 class="mb-3 mt-2 text-dark">Total :<i
                                         class="text-danger">₹{{item.item_total}}.00</i>
                                     <span class="small text-muted">({{item.order.payment.payment_method}})</span>
@@ -49,7 +48,7 @@
 
                             <div class="m-l-50">
                                 <img class="align-self-center img-fluid"
-                                    src="/media/{{item.product.product_images.first.image}}" width="150">
+                                    src="{{item.product.product_images.first.image.url}}" width="150">
                             </div>
 
                         </div>
@@ -65,10 +64,6 @@
                             <li class="step0 text-muted text-right" id="step3">
                                 <spanstyle="">DELIVERED</span>
                             </li>
-                            {% comment %} <li class="step0 text-muted text-right" id="step4"><spanstyle="margin-right:
-                                    22px;">DELIVERED</span></li>
-                            <li class="step0 text-muted text-right" id="step5"><spanstyle="margin-right:
-                                    22px;">DELIVERED</span></li> {% endcomment %}
 
                             {% elif item.order_status == 'Shipped' %}
                             <li class="step0 active" id="step1"><spanstyle="margin-left: 22px; margin-top:

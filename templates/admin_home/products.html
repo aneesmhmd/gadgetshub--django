@@ -45,7 +45,7 @@
               <th scope="row">{{forloop.counter}}</th>
 
               <th scope="row">
-                <img src="/media/{{p.product_images.first.image}}" style="width:70px;" alt=..>
+                <img src="{{p.product_images.first.image.url}}" style="width:70px;" alt=..>
               </th>
 
               <td> {{p.product_name}} </td>
@@ -123,17 +123,7 @@
 
                         </div>
 
-                        <!-- Add Image -->
-                        <!-- <div class="d-flex flex-row align-items-center mb-2">
-                          <div class="form-outline flex-fill mb-0">
-                            <input class="form-control" type="file" id="formFile" name="images" multiple required>
-                            <label class="form-label text-danger" for="formFile">*Select two or more images for adding
-                              multiple
-                              images</label>
-                          </div>
-                        </div> -->
-
-
+                  
                         <div class="row">
 
                           <!-- Price -->
@@ -227,10 +217,6 @@
       </div>
 
     </div>
-
-
-
-
 
 
     <!--==========================================-->

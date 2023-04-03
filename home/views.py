@@ -10,3 +10,7 @@ def home(request):
         'banners' : Banner.objects.all()
          }
     return render(request, 'user/index.html',context)
+
+
+def error_page(request,exception):
+    return render(request,'404.html',status=404)
