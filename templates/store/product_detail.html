@@ -19,31 +19,27 @@
 
     {% if not single_product %}
 
-    <div class="ex-page-content bootstrap snippets bootdeys">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6  d-flex align-items-center justify-content-end">
-                    <img src="/media/banner/emoji.png" alt="#" width="250px">
-                </div>
-
-                <div class="col-sm-6 d-flex align-items-center">
-                    <div class="message-box">
-                        <h1 class="m-b-0">Oops!</h1>
-                        <p>The product you are looking may be temporarily<br> unavailable or may be deleted.</p>
-                        <div class="buttons-con">
-                            <div class="action-link-wrap">
-                                <a href="{% url 'home' %}"
-                                    class="btn btn-custom btn-info waves-effect waves-light m-t-20">Go Home</a>
-                                <a href="{% url 'all_products' %}"
-                                    class="btn btn-custom btn-info waves-effect waves-light m-t-20">Continue
-                                    shopping</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="container d-flex justify-content-center">
+        <div class="w-75">
+    
+            <div class="w-100 d-flex justify-content-center">
+                <img src="{% static 'user_home/images/others/search_not_found.jpg' %}" alt="#" width="500px">
             </div>
+    
+    
+            <div class="w-100 d-flex flex-row flex-wrap justify-content-center">
+                <h5>Oops! You are looking for unavailable product or for a deleted product.</h5>
+            </div>
+    
+            <br>
+    
+            <div class="w-100 d-flex flex-row flex-wrap justify-content-center">
+                <a href="{% url 'all_products' %}" class="btn btn-outline-dark w-25 flex-c-m size-115  bor14">Go to Store</a>
+            </div>
+    
         </div>
     </div>
+
 
     {% else %}
 
