@@ -34,14 +34,11 @@ def admin_panel(request):
     # Getting the sales amount per day
     sales_by_day = payments.annotate(day=TruncDay('paid_date')).values('day').annotate(total_sales=Sum('grand_total')).order_by('day')
 
-    # Getting the dates which sales happpened
-    sales_dates = Payment.objects.annotate(sale_date=Cast('paid_date', output_field=DateField())).values('sale_date').distinct()
     
     context = {
         'sales' : sales,
         'users' : users,
         'sales_by_day' : sales_by_day,
-        'sales_dates' :sales_dates,
         'recent_sales' :recent_sales,
     }
     return render(request, 'admin_home/index.html',context)

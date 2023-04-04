@@ -23,7 +23,7 @@ urlpatterns = [
 
     # addresses
     path('add_address/<int:num>/', views.add_address, name="add_address"),
-    path('addresses/edit_address/<int:id>/<int:num>/', views.edit_address, name='edit_address'),   
+    path('addresses/edit_address/<int:id>/', views.edit_address, name='edit_address'),   
     path('addresses/delete_address/<int:id>/<int:num>/', views.delete_address, name='delete_address'),   
     path('addresses/default_address/<int:id>/<int:num>/', views.default_address, name='default_address'),
 ]

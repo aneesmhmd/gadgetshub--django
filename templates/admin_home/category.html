@@ -7,7 +7,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>All Categories</h1>
+        <h1>Category management</h1>
     </div> <!-- End Page Title -->
 
     <!-- Add category button -->
@@ -42,7 +42,7 @@
                         <tr>
                             <th scope="row">{{forloop.counter}}</th>
                             <th scope="row">
-                                <img src="/media/{{c.category_image}}" style="width:100px;" alt=..>
+                                <img src="{{c.category_image.url}}" style="width:100px;" alt=..>
                             </th>
                             <td>{{c.category_name}}</td>
                             <td>{{c.slug}}</td>

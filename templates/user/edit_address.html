@@ -25,10 +25,9 @@
             <div class="col-lg-4">
                 <div class="card mb-4">
                     <div class="card-body text-center">
-                        <img src="/media/{{user.user_image}}"
+                        <img src="{{user.user_image.url}}"
                             alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
                         <h5 class="my-3 text-dark">{{ user.username | capfirst }}</h5>
-
                     </div>
                 </div>
             </div>

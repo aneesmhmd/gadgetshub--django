@@ -63,7 +63,7 @@
                                 View
                             </button>
         
-                            <a class="btn btn-light border border-dark" href="{% url 'edit_address' a.id 1 %}">
+                            <a class="btn btn-light border border-dark" href="{% url 'edit_address' a.id %}">
                                 <i class="fa-solid fa-pen-to-square m-r-5"></i>Edit
                             </a>
         
@@ -327,7 +327,7 @@
                 alert('should select address')
                 return;
             }
-            window.location.href = `http://127.0.0.1:8000/order/success/?razorpay_payment_id=${response.razorpay_payment_id}&razorpay_order_id=${response.razorpay_order_id}&address=${addres}`
+            window.location.href = `${window.location.origin}/order/success/?razorpay_payment_id=${response.razorpay_payment_id}&razorpay_order_id=${response.razorpay_order_id}&address=${addres}`
         },
 
         "notes": {

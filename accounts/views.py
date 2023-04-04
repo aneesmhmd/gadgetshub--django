@@ -38,11 +38,13 @@ def login(request):
     return render(request, 'accounts/login.html')
 
 
+
 @login_required
 def logout(request):
     auth.logout(request)
     messages.success(request, 'You are logged out')
     return redirect(login)
+
 
 
 def signup(request):
@@ -87,6 +89,7 @@ def signup(request):
     return render(request, 'accounts/signup.html', context)
 
 
+
 def activate(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -103,6 +106,7 @@ def activate(request, uidb64, token):
     else:
         messages.error(request, 'Invalid activation link')
         return redirect(login)
+
 
 
 def forgot_password(request):
@@ -135,6 +139,7 @@ def forgot_password(request):
     return render(request, 'accounts/forgot_password.html')
 
 
+
 def reset_password_validate(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -149,6 +154,7 @@ def reset_password_validate(request, uidb64, token):
     else:
         messages.error(request, 'This link has expired!')
         return redirect('login')
+
 
 
 def reset_password(request):
@@ -179,6 +185,7 @@ def dashboard(request):
     return render(request, 'user/dashboard.html', context)
 
 
+
 @login_required(login_url='login')
 def edit_profile(request, user_id):
     if request.method == 'POST':
@@ -193,6 +200,7 @@ def edit_profile(request, user_id):
         return redirect('dashboard')
 
     return render(request, 'user/edit_profile.html')
+
 
 
 @login_required(login_url='login')
@@ -217,6 +225,7 @@ def change_password(request, user_id):
                 return redirect(dashboard)
 
     return render(request, 'user/change_password.html')
+
 
 
 @login_required
@@ -260,24 +269,21 @@ def add_address(request,num=0):
         return render(request, "user/address.html", {"form": address_form, "num" : num})
 
 
+
 @login_required
-def edit_address(request, id, num=0):
+def edit_address(request, id):
     if request.method == "POST":
         address = Address.objects.get(id=id, user=request.user)
         address_form = UserAddressForm(instance=address, data=request.POST)
         if address_form.is_valid():
-            address_form.save()
-            
-            number = int(request.GET.get('num'))
-            
-            if number == 1:
-                return HttpResponseRedirect(reverse("dashboard"))
-            elif number == 2:
-                return HttpResponseRedirect(reverse("checkout"))
+            address_form.save()        
+            return HttpResponseRedirect(reverse("dashboard"))
+        
     else:
         address = Address.objects.get(id=id, user=request.user)
         address_form = UserAddressForm(instance=address)
     return render(request, "user/edit_address.html", {"form": address_form})
+
 
 
 @login_required
@@ -289,6 +295,7 @@ def delete_address(request, id, num):
         return redirect('dashboard')
     elif num == 2:
         return redirect('checkout')
+
 
 
 @login_required
