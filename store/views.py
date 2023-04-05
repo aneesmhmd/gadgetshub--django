@@ -61,13 +61,16 @@ def product_detail(request, category_slug, product_slug):
     in_wishlist = False
     single_product = None
     count = 0
+    ordered = None
 
     try:
         single_product = Product.objects.get(category__slug=category_slug, slug=product_slug)
         variants = Variation.objects.filter(product=single_product)
         reviews = ReviewRating.objects.filter(product=single_product)
         count = reviews.count()
-        ordered = OrderItem.objects.filter(product=single_product, user=request.user).exists()
+
+        if request.user.is_authenticated:
+            ordered = OrderItem.objects.filter(product=single_product, user=request.user).exists()
         
         context = {'single_product': single_product,
                    'variants': variants,
