@@ -56,6 +56,7 @@ def all_products(request, category_slug=None, brand_slug=None):
 
 
 
+
 # Single product view
 def product_detail(request, category_slug, product_slug):
     in_wishlist = False
