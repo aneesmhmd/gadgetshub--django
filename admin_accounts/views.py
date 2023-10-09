@@ -46,6 +46,8 @@ def admin_panel(request):
 
 
 def admin_login(request):
+    if request.user.is_authenticated:
+        return redirect(admin_panel)
         
     if request.method == 'POST':
         username = request.POST['username']
