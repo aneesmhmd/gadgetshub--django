@@ -1,0 +1,11 @@
+boto3
+cloudinary
+django-cloudinary-storage
+django-storages
+psycopg2
+Pillow
+python-decouple
+python-dotenv
+razorpay
+requests
+wheel

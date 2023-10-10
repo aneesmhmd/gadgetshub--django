@@ -50,7 +50,7 @@ class Account(AbstractBaseUser):
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=50)
-    user_image = models.ImageField(upload_to='profile_picture', blank=True, null=True,default='profile_picture/propic.png')
+    user_image = models.ImageField(upload_to='profile_picture', blank=True, null=True,default='profile_picture/propic_cwuy8f.webp')
 
 
     # Required
