@@ -178,6 +178,7 @@ RAZOR_KEY_ID = os.getenv('KEY_ID')
 RAZOR_KEY_SECRET = os.getenv('KEY_SECRET')
 
 
+
 # Cloudinary configuration
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': config('cloud_name'),
